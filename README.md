@@ -223,9 +223,20 @@ screenshots/      Before/after proof of the fix working in-game
 
 ## Disclaimer
 
-This project is an independent, unofficial fix produced by reverse-engineering
+**I am not affiliated with, endorsed by, or acting on behalf of VNL
+Entertainment in any way.** This is an independent, unofficial fix, put
+together by a player, not a developer of the game.
+
+This project exists **solely to fix the crash-on-launch issue** described
+above. It is not a mod, a cheat, a cracking tool, or a way to unlock/change
+anything about the game itself — it changes nothing about the app's behavior
+other than working around the one crash. It was produced by reverse-engineering
 publicly observable crash behavior (`logcat` output and strings in the app's
-own native libraries). It does not modify, redistribute, or crack the game's
-APK or assets — it only changes OS-level behavior (ASLR) for that app's
-process on the end user's own rooted device. It is provided as-is, with no
-affiliation to VNL Entertainment.
+own native libraries), and it does not modify, redistribute, or crack the
+game's APK or assets — it only changes an OS-level setting (ASLR) for that
+app's process, on the end user's own rooted device.
+
+Provided as-is, with no warranty. If VNL Entertainment fixes this upstream
+(see [Requirements](#requirements) and the linked crash report), this project
+becomes unnecessary and I'd encourage using the official, patched version
+instead.

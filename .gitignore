@@ -1,0 +1,10 @@
+# Raw full-device logcat dumps (huge, mostly unrelated system noise; the
+# relevant excerpts are already captured in reports/)
+logs/
+
+# Screenshot with a visible account email, excluded from the repo
+screenshots/soc_fix_final.png
+
+# Native build intermediates, if ndk-build is re-run in module/jni
+module/jni/obj/
+module/jni/libs/

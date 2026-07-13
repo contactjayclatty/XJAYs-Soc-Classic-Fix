@@ -14,6 +14,17 @@ investigation that tracked down why it happens.
 > the game starts. It will **not** work on a stock, non-rooted phone. See
 > [Requirements](#requirements) below.
 
+> [!IMPORTANT]
+> This has only been tested on **KernelSU on a Pixel 9 Pro XL** (root + method).
+> It should work on other Zygisk-compatible setups, but if it doesn't work for
+> your device or root method, please [open an issue](https://github.com/contactjayclatty/XJAYs-Soc-Classic-Fix/issues/new)
+> or reach out — see [Contact](docs/contact.html).
+
+> [!NOTE]
+> **Join the Discord for updates:** https://discord.gg/gkYmXkn57Z
+> If the developers haven't fixed this upstream, I'll be working on a
+> non-root version — announcements will go there first.
+
 ---
 
 ## Table of contents

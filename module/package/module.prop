@@ -1,6 +1,6 @@
 id=socfix_vnl
 name=SoC Classic Crash Fix
-version=v0.2
-versionCode=2
+version=v0.3
+versionCode=3
 author=you
-description=Workaround for the native segfault on launch on 16GB RAM devices (Unity 2017.4 allocator bug). Disables ASLR for com.vnlentertainment.socclassic only, confirmed via testing.
+description=Workaround for the native segfault on launch on 16GB RAM devices (Unity 2017.4 allocator bug). Disables ASLR for com.vnlentertainment.socclassic only.

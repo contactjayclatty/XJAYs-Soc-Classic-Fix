@@ -187,9 +187,9 @@ antivirus engines) before publishing.
 
 | Release | Result | Report |
 |---|---|---|
-| v0.2 | **0 / 65 engines flagged it** | [View full report](https://www.virustotal.com/gui/file/0b63f9f65624507bde8c78e2650dfa50f50a8028399a2fbe2108068f2aae53a6) |
+| v0.3 | **0 / 65 engines flagged it** | [View full report](https://www.virustotal.com/gui/file/c9e4a9565146b3b6fd3c0bba517b3bdc00cf3b1133bf0141e286d037de2968e6) |
 
-- SHA256: `0b63f9f65624507bde8c78e2650dfa50f50a8028399a2fbe2108068f2aae53a6`
+- SHA256: `c9e4a9565146b3b6fd3c0bba517b3bdc00cf3b1133bf0141e286d037de2968e6`
 
 The module's full source is in this repo (`module/jni/socfix.cpp`, ~50 lines)
 — it does exactly one thing: check the running process's package name, and if

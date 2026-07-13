@@ -4,6 +4,7 @@
 ![Root Required](https://img.shields.io/badge/root-required-critical?logo=android&logoColor=white)
 ![Status](https://img.shields.io/badge/status-fix%20confirmed-success)
 ![License](https://img.shields.io/badge/license-MIT-blue)
+![VirusTotal](https://img.shields.io/badge/VirusTotal-0%2F65%20detections-success?logo=virustotal&logoColor=white)
 
 A root-only Android module that fixes a native crash-on-launch affecting
 **School of Chaos Classic** on modern high-RAM devices, along with the full
@@ -25,6 +26,7 @@ investigation that tracked down why it happens.
 - [Requirements](#requirements)
 - [Installation](#installation)
 - [Tested on](#tested-on)
+- [Security](#security)
 - [Building from source](#building-from-source)
 - [Repo layout](#repo-layout)
 - [Disclaimer](#disclaimer)
@@ -166,6 +168,23 @@ It should work on any Zygisk-capable rooted device with 16GB+ RAM hitting the
 same crash, since the fix targets the app's process directly rather than
 anything device-specific — but it has only been verified on the configuration
 above.
+
+## Security
+
+Every release is scanned with [VirusTotal](https://www.virustotal.com/) (60+
+antivirus engines) before publishing.
+
+| Release | Result | Report |
+|---|---|---|
+| v0.2 | **0 / 65 engines flagged it** | [View full report](https://www.virustotal.com/gui/file/0b63f9f65624507bde8c78e2650dfa50f50a8028399a2fbe2108068f2aae53a6) |
+
+- SHA256: `0b63f9f65624507bde8c78e2650dfa50f50a8028399a2fbe2108068f2aae53a6`
+
+The module's full source is in this repo (`module/jni/socfix.cpp`, ~50 lines)
+— it does exactly one thing: check the running process's package name, and if
+it matches the game, call `personality(ADDR_NO_RANDOMIZE)`. No network access,
+no data collection. You don't have to take a scan's word for it — read it
+yourself, or build from source and compare the hash.
 
 ## Building from source
 

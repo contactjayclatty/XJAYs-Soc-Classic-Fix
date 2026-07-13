@@ -37,6 +37,7 @@
       <span class="badge warn">Root Required</span>
       <span class="badge ok">Fix Confirmed 10/10</span>
       <span class="badge">MIT Licensed</span>
+      <span class="badge ok">VirusTotal: 0/65</span>
     </div>
     <div class="btn-row">
       <a class="btn primary lg" href="download.html">Get the fix</a>
@@ -128,6 +129,25 @@ Using memoryadresses from more that 16GB of memory</pre>
       <div class="btn-row">
         <a class="btn primary" href="download.html">Download the fix →</a>
       </div>
+    </section>
+
+    <section id="security">
+      <h2>Security</h2>
+      <p>
+        Every release is scanned with <a href="https://www.virustotal.com/">VirusTotal</a> (60+ antivirus engines) before publishing. The current release came back clean:
+      </p>
+      <div class="card">
+        <table>
+          <tbody>
+            <tr><td>Result</td><td class="result-good">0 / 65 engines flagged it</td></tr>
+            <tr><td>SHA256</td><td><code class="inline">0b63f9f65624507bde8c78e2650dfa50f50a8028399a2fbe2108068f2aae53a6</code></td></tr>
+            <tr><td>Full report</td><td><a href="https://www.virustotal.com/gui/file/0b63f9f65624507bde8c78e2650dfa50f50a8028399a2fbe2108068f2aae53a6">View on VirusTotal</a></td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p>
+        The module's full source is in the repo (<code class="inline">module/jni/socfix.cpp</code>, ~50 lines) — it does exactly one thing: check the running process's package name, and if it matches the game, call <code class="inline">personality(ADDR_NO_RANDOMIZE)</code>. No network access, no data collection. You don't have to take a scan's word for it — read it yourself, or build from source and compare the hash.
+      </p>
     </section>
 
   </div>

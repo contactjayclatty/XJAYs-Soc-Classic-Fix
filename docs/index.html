@@ -6,7 +6,7 @@
 <title>School of Chaos Classic — Crash on Launch (Multi-Device Investigation)</title>
 <meta name="description" content="School of Chaos Classic crashes on launch across multiple Android device manufacturers. Full investigation into the exact cause, with no confirmed fix currently distributed.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="assets/style.css">
 </head>
 <body>
@@ -14,8 +14,8 @@
 <header class="navbar">
   <div class="wrap">
     <div class="brand">
-      <span class="mark"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#08090c" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2 4 14h6l-1 8 9-12h-6l1-8Z"/></svg></span>
-      <span>xjay&nbsp;/&nbsp;<span class="repo-name">soc-classic-fix</span></span>
+      <span class="case-id">CASE // SOC-CLASSIC-01</span>
+      <span class="brand-sub"><span class="sep">·</span> investigation log</span>
     </div>
     <nav>
       <a href="index.html" class="active">Home</a>
@@ -24,26 +24,27 @@
       <a href="contact.html">Contact</a>
     </nav>
     <a class="gh-btn" href="https://github.com/contactjayclatty/XJAYs-Soc-Classic-Fix">
-      <svg height="16" width="16" viewBox="0 0 16 16" fill="currentColor"><path d="M8 0c4.42 0 8 3.58 8 8a8.01 8.01 0 0 1-5.47 7.59c-.4.08-.55-.17-.55-.38 0-.27.01-1.13.01-2.2 0-.75-.25-1.23-.54-1.48 1.78-.2 3.65-.88 3.65-3.95 0-.88-.31-1.59-.82-2.15.08-.2.36-1.02-.08-2.12 0 0-.67-.22-2.2.82-.64-.18-1.32-.27-2-.27-.68 0-1.36.09-2 .27-1.53-1.03-2.2-.82-2.2-.82-.44 1.1-.16 1.92-.08 2.12-.51.56-.82 1.28-.82 2.15 0 3.06 1.86 3.75 3.64 3.95-.23.2-.44.55-.51 1.07-.46.21-1.61.55-2.33-.66-.15-.24-.6-.83-1.23-.82-.67.01-.27.38.01.53.34.19.73.9.82 1.13.16.45.68 1.31 2.69.94 0 .67.01 1.3.01 1.49 0 .21-.15.45-.55.38A7.995 7.995 0 0 1 0 8c0-4.42 3.58-8 8-8Z"/></svg>
-      GitHub
+      <svg height="14" width="14" viewBox="0 0 16 16" fill="currentColor"><path d="M8 0c4.42 0 8 3.58 8 8a8.01 8.01 0 0 1-5.47 7.59c-.4.08-.55-.17-.55-.38 0-.27.01-1.13.01-2.2 0-.75-.25-1.23-.54-1.48 1.78-.2 3.65-.88 3.65-3.95 0-.88-.31-1.59-.82-2.15.08-.2.36-1.02-.08-2.12 0 0-.67-.22-2.2.82-.64-.18-1.32-.27-2-.27-.68 0-1.36.09-2 .27-1.53-1.03-2.2-.82-2.2-.82-.44 1.1-.16 1.92-.08 2.12-.51.56-.82 1.28-.82 2.15 0 3.06 1.86 3.75 3.64 3.95-.23.2-.44.55-.51 1.07-.46.21-1.61.55-2.33-.66-.15-.24-.6-.83-1.23-.82-.67.01-.27.38.01.53.34.19.73.9.82 1.13.16.45.68 1.31 2.69.94 0 .67.01 1.3.01 1.49 0 .21-.15.45-.55.38A7.995 7.995 0 0 1 0 8c0-4.42 3.58-8 8-8Z"/></svg>
+      source
     </a>
   </div>
 </header>
 
 <div class="page-banner">
   <div class="wrap">
-    <div class="eyebrow">Ongoing investigation</div>
-    <h1>School of Chaos Classic crashes on launch. Here's everything we know so far.</h1>
-    <p>A native crash-on-launch bug, confirmed now across multiple unrelated Android device manufacturers — plus the full investigation into its exact cause.</p>
-    <div class="badges">
-      <span class="badge">Platform: Android</span>
-      <span class="badge warn">No confirmed fix yet</span>
-      <span class="badge ok">Root cause identified</span>
-      <span class="badge">MIT Licensed</span>
+    <div class="case-field">
+      <span>SUBJECT:</span> com.vnlentertainment.socclassic
+      <span>SIGNAL:</span> SIGSEGV
+      <span>STATUS:</span> unresolved
     </div>
-    <div class="btn-row">
-      <a class="btn primary lg" href="download.html">Current status →</a>
-      <a class="btn secondary lg" href="https://github.com/contactjayclatty/XJAYs-Soc-Classic-Fix">View source</a>
+    <h1>Native crash on launch, traced to a 2017 memory allocator meeting 2026 address space.</h1>
+    <p>School of Chaos Classic segfaults on launch across three unrelated Android manufacturers. This page walks through how the cause was isolated, down to the exact bytes.</p>
+
+    <div class="fields">
+      <div class="field"><div class="k">Devices confirmed</div><div class="v">3 manufacturers</div></div>
+      <div class="field"><div class="k">Root cause</div><div class="v ok">Identified</div></div>
+      <div class="field"><div class="k">Public fix</div><div class="v warn">None yet</div></div>
+      <div class="field"><div class="k">Reported upstream</div><div class="v ok">Yes</div></div>
     </div>
   </div>
 </div>
@@ -51,55 +52,102 @@
 <main>
   <div class="wrap">
 
-    <section id="warning" class="reveal">
-      <div class="alert warning">
-        <div class="alert-title">⚠ No fix is currently distributed</div>
-        This project documents the bug and its cause. An experimental root-only workaround was explored but was never proven fully reliable, and isn't recommended or actively published — see <a href="download.html">Status</a> for details. The real fix has to come from the developers.
+    <section id="ruler">
+      <div class="sec-label">Exhibit 1 — the address space</div>
+      <h2>Where the heap lands vs. where the engine expects it</h2>
+      <p>
+        School of Chaos Classic's engine assumes its heap never needs an address above 16GB. On a 64-bit process, Android's ASLR is free to place that heap anywhere in a much larger range — including above that line.
+      </p>
+
+      <div class="ruler-wrap">
+        <svg viewBox="0 0 900 100" width="100%" height="auto" role="img" aria-label="Diagram of the 64-bit virtual address space from 0 to 32GB, with a marked ceiling at 16GB separating a safe zone from an overflow zone where the heap can be placed by ASLR.">
+          <line x1="40" y1="60" x2="450" y2="60" stroke="#56795f" stroke-width="2"/>
+          <line x1="450" y1="60" x2="860" y2="60" stroke="#d9633b" stroke-width="2" opacity="0.65"/>
+          <line x1="450" y1="18" x2="450" y2="82" stroke="#a89f8d" stroke-width="1" stroke-dasharray="2,3"/>
+          <text x="450" y="12" text-anchor="middle" fill="#e8e2d4" font-family="IBM Plex Mono" font-size="12" font-weight="600">16GB — allocator's assumed ceiling</text>
+          <text x="245" y="46" text-anchor="middle" fill="#7fb88f" font-family="IBM Plex Mono" font-size="11">safe</text>
+          <text x="655" y="46" text-anchor="middle" fill="#d9633b" font-family="IBM Plex Mono" font-size="11">overflow zone — ASLR can land here</text>
+          <g stroke="#453d33" stroke-width="1">
+            <line x1="40" y1="55" x2="40" y2="65"/>
+            <line x1="245" y1="55" x2="245" y2="65"/>
+            <line x1="450" y1="55" x2="450" y2="65"/>
+            <line x1="655" y1="55" x2="655" y2="65"/>
+            <line x1="860" y1="55" x2="860" y2="65"/>
+          </g>
+          <g fill="#6b655a" font-family="IBM Plex Mono" font-size="11" text-anchor="middle">
+            <text x="40" y="80">0</text>
+            <text x="245" y="80">8GB</text>
+            <text x="450" y="80">16GB</text>
+            <text x="655" y="80">24GB</text>
+            <text x="860" y="80">32GB</text>
+          </g>
+        </svg>
       </div>
-      <div class="alert note">
-        <div class="alert-title">📣 Help us document this</div>
-        The more devices we can confirm this on, the stronger the case for a fix upstream. See <a href="contact.html">Contact</a> to report your device, or join the <a href="https://discord.gg/gkYmXkn57Z">Discord</a> for updates.
+
+      <p class="ruler-caption">
+        When the placement lands past 16GB, the allocator's packed pointer representation overflows. What actually gets dereferenced next is a corrupted, near-zero address — observed directly in crash logs:
+      </p>
+
+      <div class="ruler-wrap">
+        <svg viewBox="0 0 900 130" width="100%" height="auto" role="img" aria-label="Zoomed-in diagram of the address range from 1.0MB to 1.3MB, showing seven real fault addresses recovered from crash logs clustered tightly together.">
+          <text x="40" y="14" fill="#6b655a" font-family="IBM Plex Mono" font-size="11">zoomed — 1.0MB to 1.3MB (7 confirmed fault addresses)</text>
+          <line x1="40" y1="60" x2="860" y2="60" stroke="#453d33" stroke-width="2"/>
+          <g stroke="#d9633b" stroke-width="2">
+            <line x1="448" y1="50" x2="448" y2="70"/>
+            <line x1="626" y1="50" x2="626" y2="70"/>
+            <line x1="655" y1="50" x2="655" y2="70"/>
+            <line x1="632" y1="50" x2="632" y2="70"/>
+            <line x1="635" y1="50" x2="635" y2="70"/>
+            <line x1="650" y1="50" x2="650" y2="70"/>
+            <line x1="637" y1="50" x2="637" y2="70"/>
+          </g>
+          <line x1="448" y1="72" x2="448" y2="95" stroke="#d9633b" stroke-width="1" stroke-dasharray="2,2"/>
+          <text x="448" y="110" text-anchor="middle" fill="#e8e2d4" font-family="IBM Plex Mono" font-size="12" font-weight="600">0x119b8c</text>
+          <text x="448" y="124" text-anchor="middle" fill="#6b655a" font-family="IBM Plex Mono" font-size="10.5">first confirmed fault</text>
+          <line x1="640" y1="72" x2="640" y2="95" stroke="#d9633b" stroke-width="1" stroke-dasharray="2,2"/>
+          <text x="640" y="110" text-anchor="middle" fill="#e8e2d4" font-family="IBM Plex Mono" font-size="12" font-weight="600">0x128a4b–0x12af55</text>
+          <text x="640" y="124" text-anchor="middle" fill="#6b655a" font-family="IBM Plex Mono" font-size="10.5">6 more, same cluster</text>
+        </svg>
       </div>
     </section>
 
-    <section id="about" class="reveal">
-      <div class="eyebrow">The game</div>
-      <h2>About the game</h2>
+    <section id="about">
+      <div class="sec-label">Background</div>
+      <h2>The game</h2>
       <p>
-        <strong>School of Chaos Classic</strong> (<code class="inline">com.vnlentertainment.socclassic</code>) is a Unity-built, open-world school-life sim/RPG by VNL Entertainment — walk around a schoolyard, complete quests, buy and sell at the Market Place, and level up your character. It's built on <strong>Unity 2017.4.34f1</strong> and ships <strong>64-bit only</strong> — both details turn out to be directly responsible for the crash below.
+        <strong>School of Chaos Classic</strong> (<code class="inline">com.vnlentertainment.socclassic</code>) is a school-life sim/RPG by VNL Entertainment — schoolyard exploration, quests, a Market Place, character progression. It's built on <strong>Unity 2017.4.34f1</strong> and ships <strong>64-bit only</strong>. Both facts turn out to matter directly.
       </p>
     </section>
 
-    <section id="issue" class="reveal">
-      <div class="eyebrow">The bug</div>
-      <h2>The issue</h2>
+    <section id="issue">
+      <div class="sec-label">Symptom</div>
+      <h2>What happens</h2>
       <p>
-        The game crashes shortly after launch — it gets past the splash screen and into the loading scene, then silently dies back to the home screen. No error dialog, no ANR — it just disappears. First noticed on a Pixel 9 Pro XL and initially assumed to be a high-RAM-Pixel-specific issue.
+        The game gets through the splash screen and into the loading scene, then dies silently back to the home screen — no dialog, no ANR. First identified on a Pixel 9 Pro XL and initially assumed to be a high-RAM-Pixel issue. It is not — see <a href="#devices">confirmed devices</a> below.
       </p>
-      <p><strong>It is not.</strong> The identical crash has since been confirmed on hardware from multiple unrelated manufacturers — see <a href="#devices">Confirmed across multiple devices</a> below.</p>
-      <p>The crash is also <strong>intermittent</strong> on any single device, which is a direct consequence of the root cause, not a flaky install.</p>
+      <p>The crash is also <strong>intermittent</strong> on any one device, which is a direct consequence of the cause, not a flaky install.</p>
     </section>
 
-    <section id="how" class="reveal">
+    <section id="how">
+      <div class="sec-label">Logs</div>
       <h2>How it happens</h2>
-      <p>Every crash shows the same pattern in <code class="inline">logcat</code>, regardless of device:</p>
+      <p>Every crash carries the same line, regardless of manufacturer:</p>
+      <div class="log-label">logcat</div>
       <pre>Unity   : Using memoryadresses from more that 16GB of memory</pre>
-      <p>...immediately followed by a native crash. On some devices that's:</p>
+      <p>followed by a native crash. On some devices:</p>
       <pre>ActivityManager: Process com.vnlentertainment.socclassic (pid ####) has died: fg TOP
 Zygote  : Process #### exited due to signal 11 (Segmentation fault)</pre>
-      <p>On others it's caught and re-raised with a real fault address:</p>
-      <pre>E/CRASH: signal 11 (SIGSEGV), code 1 (SEGV_MAPERR), fault addr 0000000000119b8c
+      <p>On others, caught and re-raised with a fault address:</p>
+      <pre>E/CRASH: signal 11 (SIGSEGV), code 1 (SEGV_MAPERR), fault addr <span class="fault">0000000000119b8c</span>
 E/AndroidRuntime: FATAL EXCEPTION: main
-E/AndroidRuntime: java.lang.Error: signal 11 (SIGSEGV), code 1 (SEGV_MAPERR), fault addr 0000000000119b8c</pre>
-      <p>
-        Either way it's a <strong>native segfault</strong>, not a Java exception. The fault addresses across multiple crash logs are all small, garbage-looking values in a narrow range (~<code class="inline">0x119000</code>–<code class="inline">0x12A000</code>) — consistent with a legitimate large address having its high bits truncated off, then dereferenced. It happens right as the game loads its first asset bundle.
-      </p>
+E/AndroidRuntime: java.lang.Error: signal 11 (SIGSEGV), code 1 (SEGV_MAPERR), fault addr <span class="fault">0000000000119b8c</span></pre>
     </section>
 
-    <section id="why" class="reveal">
+    <section id="why">
+      <div class="sec-label">Root cause</div>
       <h2>Why it happens</h2>
       <p>
-        Pulling the installed APK and inspecting <code class="inline">libunity.so</code> confirms <strong>Unity 2017.4.34f1</strong> — years before Unity properly supported large 64-bit address spaces on Android. The crash string sits directly next to Unity's own native memory allocator's diagnostic strings inside the binary:
+        Pulling the APK and inspecting <code class="inline">libunity.so</code> confirms Unity 2017.4.34f1 — years before Unity properly supported large 64-bit address spaces. The crash string sits directly next to the engine's own allocator diagnostics inside the binary:
       </p>
       <pre>Could not allocate memory: System out of memory!
 Trying to allocate: %zuB with %zu alignment. MemoryLabel: %s
@@ -107,37 +155,35 @@ Allocation happend at: Line:%d in %s
 [ %s ] used: %zuB | peak: %zuB | reserved: %zuB
 Using memoryadresses from more that 16GB of memory</pre>
       <p>
-        That 2017-era allocator packs its allocation bookkeeping assuming addresses stay under roughly <strong>16GB (2³⁴)</strong> of address space. On a 64-bit process, Android's ASLR (address space layout randomization) decides where to place the app's heap on every launch. When it lands <em>above</em> that threshold, the allocator's packed pointer representation overflows — corrupting memory — and the app segfaults almost immediately after.
+        That allocator packs its bookkeeping assuming addresses stay under ~16GB (2³⁴). When ASLR places the heap above that line, the packed pointer overflows, corrupts memory, and the app segfaults — almost always right as the first asset bundle loads.
       </p>
-      <div class="alert note">
-        <div class="alert-title">Updated understanding</div>
-        This was initially framed as a "16GB+ RAM phones" issue, since it first showed up reliably on a 16GB Pixel. Having now seen the identical crash on devices from other manufacturers where the RAM tier isn't confirmed to be 16GB, the more accurate framing is that this is tied to <strong>Android's ASLR address-space entropy in general</strong> — which has trended upward across Android versions — rather than a strict RAM cutoff. More RAM likely still correlates with higher risk, but it isn't the whole story.
+      <div class="note trace">
+        <div class="note-label">Revised understanding</div>
+        This was first framed as a "16GB+ RAM phones" issue, since it showed up reliably on a 16GB Pixel. Having now seen the identical crash on manufacturers where the RAM tier isn't confirmed to be 16GB, the more accurate framing is <strong>Android's ASLR entropy in general</strong> — which has trended upward across OS versions — rather than a strict RAM cutoff.
       </div>
     </section>
 
-    <section id="devices" class="reveal">
-      <div class="eyebrow">Evidence</div>
+    <section id="devices">
+      <div class="sec-label">Evidence</div>
       <h2>Confirmed across multiple devices</h2>
-      <div class="card">
-        <table>
-          <thead><tr><th>#</th><th>Manufacturer / evidence</th><th>Match</th><th>Notes</th></tr></thead>
-          <tbody>
-            <tr><td>1</td><td>Google (Pixel 9 Pro XL, 16GB RAM)</td><td class="result-good">✅ Exact</td><td>Where this was first identified and diagnosed in depth</td></tr>
-            <tr><td>2</td><td>Transsion (Tecno/Infinix/itel-family device)</td><td class="result-good">✅ Exact</td><td>7 crashes in one log capture, not rooted, no workaround</td></tr>
-            <tr><td>3</td><td>Xiaomi (MIUI)</td><td class="result-good">✅ Exact</td><td>3 crashes in one log capture, not rooted, no workaround</td></tr>
-          </tbody>
-        </table>
-      </div>
+      <table>
+        <thead><tr><th>#</th><th>Manufacturer</th><th>Match</th><th>Notes</th></tr></thead>
+        <tbody>
+          <tr><td>1</td><td>Google — Pixel 9 Pro XL, 16GB RAM</td><td class="result-good">exact</td><td>Identified and diagnosed in depth here</td></tr>
+          <tr><td>2</td><td>Transsion (Tecno/Infinix/itel family)</td><td class="result-good">exact</td><td>7 crashes in one log capture, no root, no workaround</td></tr>
+          <tr><td>3</td><td>Xiaomi (MIUI)</td><td class="result-good">exact</td><td>3 crashes in one log capture, no root, no workaround</td></tr>
+        </tbody>
+      </table>
       <p>
-        All three show the identical <code class="inline">Using memoryadresses from more that 16GB of memory</code> line immediately preceding a native segfault. None of the non-Pixel reports had root or any workaround applied — confirming this is the raw, unmodified bug, not something specific to one OEM's Android build.
+        All three show the identical <code class="inline">Using memoryadresses from more that 16GB of memory</code> line immediately before a native segfault. None of the non-Pixel reports had root or any workaround applied — this is the raw, unmodified bug.
       </p>
     </section>
 
-    <section id="status-teaser" class="reveal">
-      <div class="eyebrow">Where things stand</div>
+    <section id="status-teaser">
+      <div class="sec-label">Where things stand</div>
       <h2>Status</h2>
       <p>
-        No fix is currently distributed or recommended by this project. The only real fix has to come from VNL Entertainment updating the game's Unity engine version — a full technical write-up has already been sent to them. See the <a href="download.html">Status page</a> for the full detail, including why an experimental workaround was archived rather than published.
+        No fix is currently distributed or recommended. The real fix has to come from VNL Entertainment updating the engine version — a full technical write-up has already been sent to them.
       </p>
       <div class="btn-row">
         <a class="btn primary" href="download.html">Read the full status →</a>
@@ -150,16 +196,15 @@ Using memoryadresses from more that 16GB of memory</pre>
 <footer class="site-footer">
   <div class="wrap">
     <div class="footer-links">
-      <a href="https://github.com/contactjayclatty/XJAYs-Soc-Classic-Fix">GitHub Repo</a>
-      <a href="https://github.com/contactjayclatty/XJAYs-Soc-Classic-Fix/issues">Issues</a>
-      <a href="https://github.com/contactjayclatty/XJAYs-Soc-Classic-Fix/blob/master/reports/SoC_Classic_crash_report.txt">Crash Report</a>
-      <a href="https://github.com/contactjayclatty/XJAYs-Soc-Classic-Fix/blob/master/LICENSE">MIT License</a>
-      <a href="https://discord.gg/gkYmXkn57Z">Discord</a>
+      <a href="https://github.com/contactjayclatty/XJAYs-Soc-Classic-Fix">repo</a>
+      <a href="https://github.com/contactjayclatty/XJAYs-Soc-Classic-Fix/issues">issues</a>
+      <a href="https://github.com/contactjayclatty/XJAYs-Soc-Classic-Fix/blob/master/reports/SoC_Classic_crash_report.txt">crash report</a>
+      <a href="https://github.com/contactjayclatty/XJAYs-Soc-Classic-Fix/blob/master/LICENSE">MIT license</a>
+      <a href="https://discord.gg/gkYmXkn57Z">discord</a>
     </div>
-    <p>Independent, unofficial investigation produced by analyzing publicly observable crash behavior. Not affiliated with VNL Entertainment.</p>
+    <p>Independent, unofficial investigation. Not affiliated with VNL Entertainment.</p>
   </div>
 </footer>
 
-<script src="assets/script.js"></script>
 </body>
 </html>

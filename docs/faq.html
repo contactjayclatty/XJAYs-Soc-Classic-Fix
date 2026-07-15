@@ -3,8 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>FAQ — School of Chaos Classic Crash Fix</title>
-<meta name="description" content="Frequently asked questions about the School of Chaos Classic crash fix module.">
+<title>FAQ — School of Chaos Classic Crash Investigation</title>
+<meta name="description" content="Frequently asked questions about the School of Chaos Classic crash-on-launch investigation.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="assets/style.css">
@@ -19,7 +19,7 @@
     </div>
     <nav>
       <a href="index.html">Home</a>
-      <a href="download.html">Download</a>
+      <a href="download.html">Status</a>
       <a href="faq.html" class="active">FAQ</a>
       <a href="contact.html">Contact</a>
     </nav>
@@ -34,7 +34,7 @@
   <div class="wrap">
     <div class="eyebrow">Questions</div>
     <h1>Frequently Asked Questions</h1>
-    <p>Common questions about the crash, the fix, and whether it's right for your setup.</p>
+    <p>Common questions about the crash, the investigation, and where things currently stand.</p>
   </div>
 </div>
 
@@ -44,73 +44,58 @@
     <section id="faq-list" class="reveal">
 
       <details class="faq" open>
-        <summary>Do I need root to use this?</summary>
+        <summary>Is there a fix I can install right now?</summary>
         <div class="faq-body">
-          <p>Yes, without exception. This isn't an APK mod or patch — it's a Zygisk module that runs at the OS level before the game's process starts. There is no non-root way to apply this fix.</p>
+          <p>No confirmed, recommended fix currently exists. An experimental root-only workaround was explored and is kept in the repo's <code class="inline">archive/</code> folder for reference, but it was never proven fully reliable (it still crashed once even with the mitigation confirmed active) and isn't published or recommended. See <a href="download.html">Status</a> for the full explanation.</p>
         </div>
       </details>
 
       <details class="faq">
-        <summary>Will this work on my device?</summary>
+        <summary>Is this only on Pixel phones, or 16GB RAM devices?</summary>
         <div class="faq-body">
-          <p>It should work on any device that is rooted with a Zygisk-compatible solution (Magisk+Zygisk, or KernelSU/KernelSU-Next with a Zygisk implementation like Zygisk Next or ReZygisk) and is hitting the same crash. The fix targets the game's own process directly rather than anything specific to one phone model, but it has only been verified on a Pixel 9 Pro XL — see the <a href="download.html#tested">tested configuration</a>.</p>
+          <p>No — that was the original theory, since it was first identified on a 16GB Pixel 9 Pro XL. The identical crash signature has since been confirmed on a Transsion-family device and a Xiaomi (MIUI) device, neither with confirmed 16GB RAM. See <a href="index.html#devices">Confirmed across multiple devices</a>. The more accurate framing is that this is tied to Android's ASLR entropy in general, not a strict RAM cutoff.</p>
         </div>
       </details>
 
       <details class="faq">
-        <summary>Why does this only happen on 16GB+ RAM phones?</summary>
+        <summary>Why does this only happen sometimes, not every launch?</summary>
         <div class="faq-body">
-          <p>The game's engine (Unity 2017.4.34f1) has a native memory allocator that packs its bookkeeping assuming heap addresses stay under ~16GB. On phones with less RAM, Android's address randomization (ASLR) never places the heap that high, so the bug simply doesn't trigger. On 16GB+ devices, it sometimes does. See <a href="index.html#why">Why it happens</a> for the full explanation.</p>
+          <p>The root cause is tied to ASLR, which re-randomizes where the game's heap gets placed in memory on every launch. Sometimes it lands under the problematic address threshold (game runs fine), sometimes it doesn't (instant crash). It's not your device or your install — it's effectively random chance on every cold start.</p>
         </div>
       </details>
 
       <details class="faq">
-        <summary>Why does the game sometimes launch fine, and sometimes crash?</summary>
+        <summary>What exactly is causing the crash?</summary>
         <div class="faq-body">
-          <p>Because the root cause is tied to ASLR, which re-randomizes the heap's location in memory on every launch. Sometimes it lands under the problematic address threshold (game runs fine), sometimes it doesn't (instant crash). It's not your device or your install — it's random chance on every cold start.</p>
-        </div>
-      </details>
-
-      <details class="faq">
-        <summary>Does this modify the game's APK?</summary>
-        <div class="faq-body">
-          <p>No. The APK is untouched. The module changes an OS-level process flag (disabling address randomization) for that one app's process, from outside the app entirely. Nothing in the game's files, assets, or code is patched or redistributed.</p>
-        </div>
-      </details>
-
-      <details class="faq">
-        <summary>Does this affect any other apps on my phone?</summary>
-        <div class="faq-body">
-          <p>No. The module checks the process name before doing anything, and only applies its fix to <code class="inline">com.vnlentertainment.socclassic</code>. Every other app on your device is left completely untouched.</p>
-        </div>
-      </details>
-
-      <details class="faq">
-        <summary>Is this safe?</summary>
-        <div class="faq-body">
-          <p>The module does exactly one thing: it calls a single, well-documented Linux syscall (<code class="inline">personality(ADDR_NO_RANDOMIZE)</code>) scoped to one app's process. It doesn't request network access, doesn't collect any data, and the full source is available in the repo for review.</p>
-          <p>Every release is also scanned with VirusTotal before publishing — the current release came back <strong>0/65</strong> engine detections. See the <a href="https://www.virustotal.com/gui/file/c9e4a9565146b3b6fd3c0bba517b3bdc00cf3b1133bf0141e286d037de2968e6">full scan report</a>. That said, as with any root-level software, only install modules from sources you trust and have reviewed yourself.</p>
+          <p>The game's engine (Unity 2017.4.34f1) has a native memory allocator that packs its bookkeeping assuming heap addresses stay under ~16GB of address space. When Android's ASLR places the heap above that threshold, the allocator's packed pointer representation overflows and the app segfaults. Full technical detail is on the <a href="index.html#why">Home page</a>.</p>
         </div>
       </details>
 
       <details class="faq">
         <summary>Will the developers fix this properly?</summary>
         <div class="faq-body">
-          <p>That's up to VNL Entertainment. A permanent fix requires updating the game's Unity engine version, which is out of this project's control. A full technical write-up has been prepared for the developers — see the <a href="https://github.com/contactjayclatty/XJAYs-Soc-Classic-Fix/blob/master/reports/SoC_Classic_crash_report.txt">crash report</a>. If it's ever fixed upstream, this module simply becomes unnecessary.</p>
+          <p>That's up to VNL Entertainment. A permanent fix requires updating the game's Unity engine version, which is out of this project's control. A full technical write-up has been sent to them — see the <a href="https://github.com/contactjayclatty/XJAYs-Soc-Classic-Fix/blob/master/reports/SoC_Classic_crash_report.txt">crash report</a>. If it's fixed upstream, this project's job is done.</p>
         </div>
       </details>
 
       <details class="faq">
-        <summary>I don't have root. Is there another way to fix this?</summary>
+        <summary>Can I still try the experimental workaround myself?</summary>
         <div class="faq-body">
-          <p>Not currently. Since the bug lives inside the game's compiled native code, the only way to work around it without modifying the APK is to change how the OS launches that process — which requires root. Without root, your options are waiting for an upstream engine update from the developers, or trying repeated launches until you get a lucky ASLR placement.</p>
+          <p>Yes, if you understand it's unverified and requires root. The source is in <a href="https://github.com/contactjayclatty/XJAYs-Soc-Classic-Fix/tree/master/archive">archive/</a> — you'd need to build it yourself (Android NDK required) since it isn't published as a ready-to-install release. See <code class="inline">archive/README.md</code> for context on why it's archived rather than recommended.</p>
         </div>
       </details>
 
       <details class="faq">
-        <summary>Where do I report a problem or ask something not covered here?</summary>
+        <summary>Does this modify the game's APK?</summary>
         <div class="faq-body">
-          <p>See the <a href="contact.html">Contact</a> page.</p>
+          <p>No, nothing in this project modifies, redistributes, or cracks the game's APK or assets. The archived experimental workaround only ever changed an OS-level process flag from outside the app, and even that isn't distributed.</p>
+        </div>
+      </details>
+
+      <details class="faq">
+        <summary>How can I help?</summary>
+        <div class="faq-body">
+          <p>Report your device hitting this crash — model, manufacturer, RAM if known, and a <code class="inline">logcat</code> capture around the crash if you can get one. No root or technical setup needed. See <a href="contact.html">Contact</a> or the <a href="https://discord.gg/gkYmXkn57Z">Discord</a>. The more devices we can document, the stronger the case for VNL Entertainment to prioritize a fix.</p>
         </div>
       </details>
 
@@ -123,12 +108,12 @@
   <div class="wrap">
     <div class="footer-links">
       <a href="https://github.com/contactjayclatty/XJAYs-Soc-Classic-Fix">GitHub Repo</a>
-      <a href="https://github.com/contactjayclatty/XJAYs-Soc-Classic-Fix/releases/latest">Releases</a>
+      <a href="https://github.com/contactjayclatty/XJAYs-Soc-Classic-Fix/issues">Issues</a>
       <a href="https://github.com/contactjayclatty/XJAYs-Soc-Classic-Fix/blob/master/reports/SoC_Classic_crash_report.txt">Crash Report</a>
       <a href="https://github.com/contactjayclatty/XJAYs-Soc-Classic-Fix/blob/master/LICENSE">MIT License</a>
       <a href="https://discord.gg/gkYmXkn57Z">Discord</a>
     </div>
-    <p>Independent, unofficial fix produced by analyzing publicly observable crash behavior. Not affiliated with VNL Entertainment.</p>
+    <p>Independent, unofficial investigation produced by analyzing publicly observable crash behavior. Not affiliated with VNL Entertainment.</p>
   </div>
 </footer>
 

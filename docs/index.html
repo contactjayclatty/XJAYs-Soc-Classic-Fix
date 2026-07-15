@@ -3,8 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>School of Chaos Classic — 16GB RAM Crash Fix</title>
-<meta name="description" content="A root-only Android module that fixes the native launch crash affecting School of Chaos Classic on 16GB+ RAM devices.">
+<title>School of Chaos Classic — Crash on Launch (Multi-Device Investigation)</title>
+<meta name="description" content="School of Chaos Classic crashes on launch across multiple Android device manufacturers. Full investigation into the exact cause, with no confirmed fix currently distributed.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="assets/style.css">
@@ -19,7 +19,7 @@
     </div>
     <nav>
       <a href="index.html" class="active">Home</a>
-      <a href="download.html">Download</a>
+      <a href="download.html">Status</a>
       <a href="faq.html">FAQ</a>
       <a href="contact.html">Contact</a>
     </nav>
@@ -32,18 +32,17 @@
 
 <div class="page-banner">
   <div class="wrap">
-    <div class="eyebrow">Free &amp; open source</div>
-    <h1>School of Chaos Classic keeps crashing on your 16GB phone. Here's the fix.</h1>
-    <p>A root-only Android module that stops the native launch crash affecting School of Chaos Classic on Pixel 8/9 Pro-class devices and other high-RAM flagships — plus the full investigation behind it.</p>
+    <div class="eyebrow">Ongoing investigation</div>
+    <h1>School of Chaos Classic crashes on launch. Here's everything we know so far.</h1>
+    <p>A native crash-on-launch bug, confirmed now across multiple unrelated Android device manufacturers — plus the full investigation into its exact cause.</p>
     <div class="badges">
       <span class="badge">Platform: Android</span>
-      <span class="badge warn">Root Required</span>
-      <span class="badge ok">Fix Confirmed</span>
+      <span class="badge warn">No confirmed fix yet</span>
+      <span class="badge ok">Root cause identified</span>
       <span class="badge">MIT Licensed</span>
-      <span class="badge ok">VirusTotal: 0/65</span>
     </div>
     <div class="btn-row">
-      <a class="btn primary lg" href="download.html">Get the fix</a>
+      <a class="btn primary lg" href="download.html">Current status →</a>
       <a class="btn secondary lg" href="https://github.com/contactjayclatty/XJAYs-Soc-Classic-Fix">View source</a>
     </div>
   </div>
@@ -52,18 +51,14 @@
 <main>
   <div class="wrap">
 
-    <section id="root-warning" class="reveal">
+    <section id="warning" class="reveal">
       <div class="alert warning">
-        <div class="alert-title">⚠ Root access is mandatory</div>
-        This isn't an APK patch — it's a system-level module that runs before the game starts, via Zygisk (Magisk or KernelSU + a Zygisk implementation). It will not work on a stock, non-rooted phone. See the <a href="download.html#requirements">Requirements</a> section.
-      </div>
-      <div class="alert warning">
-        <div class="alert-title">⚠ Limited testing so far</div>
-        This has only been tested on <strong>KernelSU on a Pixel 9 Pro XL</strong> (root + method). It should work on other Zygisk-compatible setups, but if it doesn't work for your device or root method, please <a href="contact.html">get in touch</a> or <a href="https://github.com/contactjayclatty/XJAYs-Soc-Classic-Fix/issues/new">open an issue</a>.
+        <div class="alert-title">⚠ No fix is currently distributed</div>
+        This project documents the bug and its cause. An experimental root-only workaround was explored but was never proven fully reliable, and isn't recommended or actively published — see <a href="download.html">Status</a> for details. The real fix has to come from the developers.
       </div>
       <div class="alert note">
-        <div class="alert-title">📣 Join the Discord for updates</div>
-        <a href="https://discord.gg/gkYmXkn57Z">discord.gg/gkYmXkn57Z</a> — if the developers haven't fixed this upstream, I'll be working on a non-root version, and announcements will go there first.
+        <div class="alert-title">📣 Help us document this</div>
+        The more devices we can confirm this on, the stronger the case for a fix upstream. See <a href="contact.html">Contact</a> to report your device, or join the <a href="https://discord.gg/gkYmXkn57Z">Discord</a> for updates.
       </div>
     </section>
 
@@ -71,7 +66,7 @@
       <div class="eyebrow">The game</div>
       <h2>About the game</h2>
       <p>
-        <strong>School of Chaos Classic</strong> (<code class="inline">com.vnlentertainment.socclassic</code>) is a Unity-built, open-world school-life sim/RPG by VNL Entertainment — walk around a schoolyard, complete quests, buy and sell at the Market Place, and level up your character. It's built on an older Unity engine release (2017.4 LTS), which turns out to be directly responsible for the crash below.
+        <strong>School of Chaos Classic</strong> (<code class="inline">com.vnlentertainment.socclassic</code>) is a Unity-built, open-world school-life sim/RPG by VNL Entertainment — walk around a schoolyard, complete quests, buy and sell at the Market Place, and level up your character. It's built on <strong>Unity 2017.4.34f1</strong> and ships <strong>64-bit only</strong> — both details turn out to be directly responsible for the crash below.
       </p>
     </section>
 
@@ -79,90 +74,74 @@
       <div class="eyebrow">The bug</div>
       <h2>The issue</h2>
       <p>
-        On phones with <strong>16GB or more of RAM</strong> — Pixel 8 Pro, Pixel 9 Pro / Pro XL, and a growing list of current-generation flagships — the game crashes shortly after launch. It gets past the splash screen and into the loading scene, then silently dies back to the home screen. No error dialog, no ANR, nothing in <code class="inline">AndroidRuntime</code> — it just disappears.
+        The game crashes shortly after launch — it gets past the splash screen and into the loading scene, then silently dies back to the home screen. No error dialog, no ANR — it just disappears. First noticed on a Pixel 9 Pro XL and initially assumed to be a high-RAM-Pixel-specific issue.
       </p>
-      <p>The crash is <strong>intermittent</strong>, which made it easy to write off as a fluke before the actual trigger was identified.</p>
+      <p><strong>It is not.</strong> The identical crash has since been confirmed on hardware from multiple unrelated manufacturers — see <a href="#devices">Confirmed across multiple devices</a> below.</p>
+      <p>The crash is also <strong>intermittent</strong> on any single device, which is a direct consequence of the root cause, not a flaky install.</p>
     </section>
 
     <section id="how" class="reveal">
       <h2>How it happens</h2>
-      <p>Every crash shows the identical pattern in <code class="inline">logcat</code>:</p>
-      <pre>Unity   : Using memoryadresses from more that 16GB of memory
-ActivityManager: Process com.vnlentertainment.socclassic (pid ####) has died: fg TOP
+      <p>Every crash shows the same pattern in <code class="inline">logcat</code>, regardless of device:</p>
+      <pre>Unity   : Using memoryadresses from more that 16GB of memory</pre>
+      <p>...immediately followed by a native crash. On some devices that's:</p>
+      <pre>ActivityManager: Process com.vnlentertainment.socclassic (pid ####) has died: fg TOP
 Zygote  : Process #### exited due to signal 11 (Segmentation fault)</pre>
+      <p>On others it's caught and re-raised with a real fault address:</p>
+      <pre>E/CRASH: signal 11 (SIGSEGV), code 1 (SEGV_MAPERR), fault addr 0000000000119b8c
+E/AndroidRuntime: FATAL EXCEPTION: main
+E/AndroidRuntime: java.lang.Error: signal 11 (SIGSEGV), code 1 (SEGV_MAPERR), fault addr 0000000000119b8c</pre>
       <p>
-        That's a <strong>native segfault</strong> (SIGSEGV), not a Java exception — there's no <code class="inline">FATAL EXCEPTION</code> anywhere in the log. It happens right as the game loads its first asset bundle, a few seconds into the loading sequence.
+        Either way it's a <strong>native segfault</strong>, not a Java exception. The fault addresses across multiple crash logs are all small, garbage-looking values in a narrow range (~<code class="inline">0x119000</code>–<code class="inline">0x12A000</code>) — consistent with a legitimate large address having its high bits truncated off, then dereferenced. It happens right as the game loads its first asset bundle.
       </p>
     </section>
 
     <section id="why" class="reveal">
       <h2>Why it happens</h2>
       <p>
-        Pulling the installed APK and inspecting <code class="inline">libunity.so</code> confirms the game is built on <strong>Unity 2017.4.34f1</strong> — released in 2018, years before Unity properly supported large 64-bit address spaces on Android.
+        Pulling the installed APK and inspecting <code class="inline">libunity.so</code> confirms <strong>Unity 2017.4.34f1</strong> — years before Unity properly supported large 64-bit address spaces on Android. The crash string sits directly next to Unity's own native memory allocator's diagnostic strings inside the binary:
       </p>
-      <p>The crash string sits directly next to Unity's own native memory allocator's diagnostic strings inside the binary:</p>
       <pre>Could not allocate memory: System out of memory!
 Trying to allocate: %zuB with %zu alignment. MemoryLabel: %s
 Allocation happend at: Line:%d in %s
 [ %s ] used: %zuB | peak: %zuB | reserved: %zuB
 Using memoryadresses from more that 16GB of memory</pre>
       <p>
-        That 2017-era allocator packs its allocation bookkeeping assuming addresses stay under roughly <strong>16GB (2³⁴)</strong>. On a phone with 16GB of physical RAM, Android's ASLR (address space layout randomization) can place the app's heap <em>above</em> that threshold. When it does, the allocator's packed pointer representation overflows — corrupting memory — and the app segfaults almost immediately after logging that warning.
+        That 2017-era allocator packs its allocation bookkeeping assuming addresses stay under roughly <strong>16GB (2³⁴)</strong> of address space. On a 64-bit process, Android's ASLR (address space layout randomization) decides where to place the app's heap on every launch. When it lands <em>above</em> that threshold, the allocator's packed pointer representation overflows — corrupting memory — and the app segfaults almost immediately after.
       </p>
-      <p>
-        Because ASLR re-randomizes the heap location on every launch, this explains the intermittent behavior perfectly: sometimes the heap lands below the threshold and the game runs fine, sometimes it doesn't and it crashes instantly.
-      </p>
+      <div class="alert note">
+        <div class="alert-title">Updated understanding</div>
+        This was initially framed as a "16GB+ RAM phones" issue, since it first showed up reliably on a 16GB Pixel. Having now seen the identical crash on devices from other manufacturers where the RAM tier isn't confirmed to be 16GB, the more accurate framing is that this is tied to <strong>Android's ASLR address-space entropy in general</strong> — which has trended upward across Android versions — rather than a strict RAM cutoff. More RAM likely still correlates with higher risk, but it isn't the whole story.
+      </div>
     </section>
 
-    <section id="fix" class="reveal">
-      <div class="eyebrow">The solution</div>
-      <h2>The fix</h2>
-      <p>
-        This project ships a <strong>Zygisk module</strong> that hooks into the game's process <em>before it starts</em> (via the <code class="inline">preAppSpecialize</code> callback, which runs with elevated privilege prior to the app being sandboxed) and calls:
-      </p>
-      <pre>personality(ADDR_NO_RANDOMIZE);</pre>
-      <p>
-        ...scoped to <code class="inline">com.vnlentertainment.socclassic</code> only. This disables address randomization for that process alone, keeping its heap addresses low and stable, which avoids the overflow entirely. <strong>No other app on the device is affected.</strong>
-      </p>
-
+    <section id="devices" class="reveal">
+      <div class="eyebrow">Evidence</div>
+      <h2>Confirmed across multiple devices</h2>
       <div class="card">
         <table>
-          <thead><tr><th>Condition</th><th>Launches</th><th>Result</th></tr></thead>
+          <thead><tr><th>#</th><th>Manufacturer / evidence</th><th>Match</th><th>Notes</th></tr></thead>
           <tbody>
-            <tr><td>ASLR enabled (no fix)</td><td>Repeated launches</td><td class="result-bad">Crashed reliably</td></tr>
-            <tr><td>ASLR disabled (fix active)</td><td>Repeated launches</td><td class="result-good">Crash-free in every batch tested</td></tr>
+            <tr><td>1</td><td>Google (Pixel 9 Pro XL, 16GB RAM)</td><td class="result-good">✅ Exact</td><td>Where this was first identified and diagnosed in depth</td></tr>
+            <tr><td>2</td><td>Transsion (Tecno/Infinix/itel-family device)</td><td class="result-good">✅ Exact</td><td>7 crashes in one log capture, not rooted, no workaround</td></tr>
+            <tr><td>3</td><td>Xiaomi (MIUI)</td><td class="result-good">✅ Exact</td><td>3 crashes in one log capture, not rooted, no workaround</td></tr>
           </tbody>
         </table>
       </div>
-
       <p>
-        This is a device-side workaround, not a patch to the game itself — a permanent fix requires the developers to update their Unity engine version. The full write-up addressed to the developers, with supporting evidence, is in the
-        <a href="https://github.com/contactjayclatty/XJAYs-Soc-Classic-Fix/blob/master/reports/SoC_Classic_crash_report.txt">crash report</a> in the repo.
+        All three show the identical <code class="inline">Using memoryadresses from more that 16GB of memory</code> line immediately preceding a native segfault. None of the non-Pixel reports had root or any workaround applied — confirming this is the raw, unmodified bug, not something specific to one OEM's Android build.
       </p>
+    </section>
 
+    <section id="status-teaser" class="reveal">
+      <div class="eyebrow">Where things stand</div>
+      <h2>Status</h2>
+      <p>
+        No fix is currently distributed or recommended by this project. The only real fix has to come from VNL Entertainment updating the game's Unity engine version — a full technical write-up has already been sent to them. See the <a href="download.html">Status page</a> for the full detail, including why an experimental workaround was archived rather than published.
+      </p>
       <div class="btn-row">
-        <a class="btn primary" href="download.html">Download the fix →</a>
+        <a class="btn primary" href="download.html">Read the full status →</a>
       </div>
-    </section>
-
-    <section id="security" class="reveal">
-      <div class="eyebrow">Trust</div>
-      <h2>Security</h2>
-      <p>
-        Every release is scanned with <a href="https://www.virustotal.com/">VirusTotal</a> (60+ antivirus engines) before publishing. The current release came back clean:
-      </p>
-      <div class="card">
-        <table>
-          <tbody>
-            <tr><td>Result</td><td class="result-good">0 / 65 engines flagged it</td></tr>
-            <tr><td>SHA256</td><td><code class="inline">c9e4a9565146b3b6fd3c0bba517b3bdc00cf3b1133bf0141e286d037de2968e6</code></td></tr>
-            <tr><td>Full report</td><td><a href="https://www.virustotal.com/gui/file/c9e4a9565146b3b6fd3c0bba517b3bdc00cf3b1133bf0141e286d037de2968e6">View on VirusTotal</a></td></tr>
-          </tbody>
-        </table>
-      </div>
-      <p>
-        The module's full source is in the repo (<code class="inline">module/jni/socfix.cpp</code>, ~50 lines) — it does exactly one thing: check the running process's package name, and if it matches the game, call <code class="inline">personality(ADDR_NO_RANDOMIZE)</code>. No network access, no data collection. You don't have to take a scan's word for it — read it yourself, or build from source and compare the hash.
-      </p>
     </section>
 
   </div>
@@ -172,12 +151,12 @@ Using memoryadresses from more that 16GB of memory</pre>
   <div class="wrap">
     <div class="footer-links">
       <a href="https://github.com/contactjayclatty/XJAYs-Soc-Classic-Fix">GitHub Repo</a>
-      <a href="https://github.com/contactjayclatty/XJAYs-Soc-Classic-Fix/releases/latest">Releases</a>
+      <a href="https://github.com/contactjayclatty/XJAYs-Soc-Classic-Fix/issues">Issues</a>
       <a href="https://github.com/contactjayclatty/XJAYs-Soc-Classic-Fix/blob/master/reports/SoC_Classic_crash_report.txt">Crash Report</a>
       <a href="https://github.com/contactjayclatty/XJAYs-Soc-Classic-Fix/blob/master/LICENSE">MIT License</a>
       <a href="https://discord.gg/gkYmXkn57Z">Discord</a>
     </div>
-    <p>Independent, unofficial fix produced by analyzing publicly observable crash behavior. Not affiliated with VNL Entertainment.</p>
+    <p>Independent, unofficial investigation produced by analyzing publicly observable crash behavior. Not affiliated with VNL Entertainment.</p>
   </div>
 </footer>
 

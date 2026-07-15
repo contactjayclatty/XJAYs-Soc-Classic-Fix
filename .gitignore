@@ -5,9 +5,9 @@ logs/
 # Screenshot with a visible account email, excluded from the repo
 screenshots/soc_fix_final.png
 
-# Native build intermediates (ndk-build must be run from module/, not module/jni/)
-module/obj/
-module/libs/
+# Native build intermediates (ndk-build must be run from archive/module/, not archive/module/jni/)
+archive/module/obj/
+archive/module/libs/
 
 # Video production materials — internal, not part of the released project
 YouTube Video/

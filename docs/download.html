@@ -74,7 +74,12 @@
             <div class="field"><div class="k">VirusTotal</div><div class="v ok">0 / 65</div></div>
           </div>
           <div class="btn-row">
-            <a class="btn primary" href="https://github.com/contactjayclatty/XJAYs-Soc-Classic-Fix/releases/download/v0.3/socfix_module.zip">Download socfix_module.zip →</a>
+            <a class="btn primary js-download"
+               href="https://github.com/contactjayclatty/XJAYs-Soc-Classic-Fix/releases/download/v0.3/socfix_module.zip"
+               data-filename="socfix_module.zip"
+               data-size="3.9 KB"
+               data-stack="Zygisk · arm64-v8a"
+               data-virus="0 / 65 clean">Download socfix_module.zip →</a>
             <a class="btn" href="https://github.com/contactjayclatty/XJAYs-Soc-Classic-Fix/releases/tag/v0.3">GitHub release notes</a>
           </div>
         </div>
@@ -167,6 +172,37 @@
   </div>
 </footer>
 
+<div class="dl-modal-overlay" id="dlModalOverlay" hidden>
+  <div class="dl-modal" role="dialog" aria-modal="true" aria-labelledby="dlModalTitle" aria-describedby="dlModalDesc">
+    <div class="dl-modal-head">
+      <span class="dl-modal-tag">PREFLIGHT CHECK</span>
+      <button type="button" class="dl-modal-close" id="dlModalClose" aria-label="Cancel download">×</button>
+    </div>
+    <div class="dl-modal-body">
+      <div class="dl-modal-file" id="dlModalTitle">socfix_module.zip</div>
+
+      <div class="fields dl-modal-fields">
+        <div class="field"><div class="k">Size</div><div class="v" id="dlModalSize">3.9 KB</div></div>
+        <div class="field"><div class="k">Stack</div><div class="v" id="dlModalStack">Zygisk · arm64-v8a</div></div>
+        <div class="field"><div class="k">Virus check</div><div class="v ok" id="dlModalVirus">0 / 65 clean</div></div>
+      </div>
+
+      <div class="dl-modal-progress">
+        <div class="dl-modal-progress-track">
+          <div class="dl-modal-progress-fill" id="dlModalFill"></div>
+        </div>
+        <div class="dl-modal-progress-meta">
+          <span class="dl-modal-status" id="dlModalStatus">Verifying package integrity…</span>
+          <span class="dl-modal-pct" id="dlModalPct">0%</span>
+        </div>
+      </div>
+
+      <p class="dl-modal-note" id="dlModalDesc">Local checks only — the file itself downloads from GitHub releases. Download starts automatically once checks complete.</p>
+    </div>
+  </div>
+</div>
+
   <script src="assets/page-transition.js" defer></script>
+  <script src="assets/download-modal.js" defer></script>
 </body>
 </html>

@@ -28,6 +28,52 @@ body{
   line-height:1.6;
   -webkit-font-smoothing:antialiased;
 }
+
+/* ---------- page transitions (enter / leave between HTML pages) ---------- */
+/* Only hide pre-enter when JS is live — no blank page if the script fails. */
+html.page-trans.js body{
+  transition:
+    opacity 0.28s ease,
+    transform 0.32s cubic-bezier(0.22, 1, 0.36, 1);
+}
+html.page-trans.js body:not(.is-ready):not(.is-leaving){
+  opacity:0;
+  transform:translateY(8px);
+}
+html.page-trans.js body.is-ready{
+  opacity:1;
+  transform:translateY(0);
+}
+html.page-trans.js body.is-leaving{
+  opacity:0;
+  transform:translateY(-6px);
+  pointer-events:none;
+  transition:
+    opacity 0.2s ease,
+    transform 0.22s ease;
+}
+/* thin phosphor sweep on enter — case-file, not marketing chrome */
+html.page-trans.js body.is-ready::before{
+  content:"";
+  position:fixed; left:0; right:0; top:0; height:1px; z-index:9999;
+  background:linear-gradient(90deg, transparent, var(--trace-dim), transparent);
+  pointer-events:none;
+  animation:page-scan 0.55s ease-out both;
+}
+@keyframes page-scan{
+  from{ opacity:0; transform:scaleX(0.2); }
+  30%{ opacity:0.85; }
+  to{ opacity:0; transform:scaleX(1); }
+}
+@media (prefers-reduced-motion: reduce){
+  html.page-trans.js body,
+  html.page-trans.js body.is-ready,
+  html.page-trans.js body:not(.is-ready):not(.is-leaving),
+  html.page-trans.js body.is-leaving{
+    opacity:1; transform:none; transition:none;
+  }
+  html.page-trans.js body.is-ready::before{ display:none; animation:none; }
+}
 a{color:var(--trace); text-decoration:underline; text-decoration-color:var(--trace-dim); text-underline-offset:3px;}
 a:hover{color:var(--paper); text-decoration-color:var(--paper);}
 code, pre{font-family:var(--mono);}

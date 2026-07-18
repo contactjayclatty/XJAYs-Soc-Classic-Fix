@@ -170,6 +170,41 @@ tr:last-child td{border-bottom:none;}
 .btn.primary:hover{background:var(--ink); border-color:var(--trace);}
 .btn-row{display:flex; gap:12px; flex-wrap:wrap; margin-top:22px;}
 
+/* ---------- release package card (download page) ---------- */
+.release-card{
+  border:1px solid var(--line-bright);
+  background:var(--panel);
+  margin:18px 0 22px;
+}
+.release-card-head{
+  display:flex; align-items:center; gap:14px; flex-wrap:wrap;
+  padding:10px 16px; border-bottom:1px solid var(--line);
+  font-family:var(--mono); font-size:12px;
+}
+.release-tag{
+  color:var(--ink); background:var(--trace); font-weight:600;
+  letter-spacing:0.06em; padding:2px 8px; border-radius:2px;
+}
+.release-id{color:var(--paper-dim);}
+.release-class{
+  margin-left:auto; color:var(--fault); text-transform:uppercase;
+  letter-spacing:0.06em; font-size:11px;
+}
+.release-card-body{padding:18px 16px 20px;}
+.release-title{
+  font-family:var(--mono); font-weight:600; font-size:1.15rem;
+  color:var(--paper); margin:0 0 10px;
+}
+.release-desc{margin:0 0 16px; max-width:none;}
+.release-card .fields{margin-top:0; margin-bottom:4px;}
+.release-card .btn-row{margin-top:18px;}
+.release-current{
+  font-family:var(--mono); font-size:10.5px; color:var(--trace);
+  text-transform:uppercase; letter-spacing:0.05em; margin-left:6px;
+  border:1px solid var(--trace-dim); padding:1px 6px; border-radius:2px;
+  vertical-align:middle;
+}
+
 /* FAQ as a query/response log, not an accordion widget */
 details.faq{border-bottom:1px solid var(--line); padding:16px 0;}
 details.faq summary{

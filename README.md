@@ -2,6 +2,7 @@
 
 ![Platform](https://img.shields.io/badge/platform-Android-3DDC84?logo=android&logoColor=white)
 ![Status](https://img.shields.io/badge/status-unfixed%20upstream-critical)
+![Module](https://img.shields.io/badge/module-v0.3%20experimental-orange)
 ![Confirmed devices](https://img.shields.io/badge/confirmed%20on-3%2B%20device%20families-informational)
 ![License](https://img.shields.io/badge/license-MIT-blue)
 
@@ -10,10 +11,11 @@ This repo documents a native crash-on-launch bug in **School of Chaos Classic**
 cause, and evidence that it's affecting multiple, unrelated Android device
 manufacturers — not just one phone or RAM tier as first suspected.
 
-**There is currently no publicly recommended fix.** An experimental root-only
-workaround was explored and is kept in [`archive/`](archive/) for reference,
-but it was never proven fully reliable and is not distributed or promoted —
-see [Status](#status) below for why.
+**Upstream is still unfixed.** An **experimental** root-only Zygisk module
+(**[v0.3](https://github.com/contactjayclatty/XJAYs-Soc-Classic-Fix/releases/tag/v0.3)**)
+is published for people who want a device-side workaround. It is **not** a
+guaranteed fix — see [Status](#status) and the project site
+([Download](https://contactjayclatty.github.io/XJAYs-Soc-Classic-Fix/download.html)).
 
 ---
 
@@ -25,6 +27,7 @@ see [Status](#status) below for why.
 - [Why it happens](#why-it-happens)
 - [Confirmed across multiple devices](#confirmed-across-multiple-devices)
 - [Status](#status)
+- [Experimental module (v0.3)](#experimental-module-v03)
 - [How you can help](#how-you-can-help)
 - [Repo layout](#repo-layout)
 - [Disclaimer](#disclaimer)
@@ -139,25 +142,56 @@ person's device configuration.
 
 ## Status
 
-**No fix is currently distributed or recommended by this project.**
-
-An experimental workaround was built and tested: a Zygisk module (root-only)
-that disables ASLR for just this game's process, on the theory that keeping
-its heap address low and stable would avoid the overflow. It showed promising
-results in repeated testing — but in one specific run, the mitigation was
-confirmed active and the game **still crashed**, meaning it was never proven
-to fully eliminate the bug. Combined with the fact that this issue now
-appears across device families the workaround was never tested on, it isn't
-being published as a recommended release. The source is kept in
-[`archive/`](archive/) for anyone who wants to inspect, build, or experiment
-with it themselves, entirely at their own risk.
+| Item | State |
+|---|---|
+| Upstream fix (VNL / Unity update) | **None yet** |
+| Root cause | Identified |
+| Reported to VNL | Yes — see [`reports/SoC_Classic_crash_report.txt`](reports/SoC_Classic_crash_report.txt) |
+| Experimental module | **[v0.3](https://github.com/contactjayclatty/XJAYs-Soc-Classic-Fix/releases/tag/v0.3) live** |
 
 **The only real fix has to come from VNL Entertainment** — specifically,
 updating the game's Unity engine version. Later Unity releases rewrote this
 allocator to handle 64-bit address spaces correctly, which is exactly why
-this bug class doesn't exist in modern Unity builds. A full technical
-write-up with supporting evidence has already been sent to the developers:
-[`reports/SoC_Classic_crash_report.txt`](reports/SoC_Classic_crash_report.txt).
+this bug class doesn't exist in modern Unity builds.
+
+Until that happens, a community device-side workaround is available (next
+section). It does not replace an upstream engine fix.
+
+## Experimental module (v0.3)
+
+A **root-only Zygisk module** disables ASLR for just this game's process
+(`com.vnlentertainment.socclassic`), via `personality(ADDR_NO_RANDOMIZE)` in
+Zygisk `preAppSpecialize` — on the theory that keeping the heap address low
+and stable avoids the overflow above.
+
+| | |
+|---|---|
+| Release | **[v0.3](https://github.com/contactjayclatty/XJAYs-Soc-Classic-Fix/releases/tag/v0.3)** (2026-07-13) |
+| Package | `socfix_module.zip` · id `socfix_vnl` · versionCode `3` |
+| ABI | arm64-v8a |
+| Requirements | Root + Zygisk (KernelSU, or Magisk with Zygisk enabled) |
+| Site | [Download page](https://contactjayclatty.github.io/XJAYs-Soc-Classic-Fix/download.html) |
+| Source | [`archive/module/`](archive/module/) |
+
+**Not a guaranteed fix.** It showed promising results in testing, but in one
+run the mitigation was confirmed active and the game **still crashed**.
+Primarily tested on KernelSU + Pixel 9 Pro XL; other OEMs where the crash is
+confirmed were never tested with this module. Install at your own risk.
+
+### Install (short)
+
+1. Download [`socfix_module.zip`](https://github.com/contactjayclatty/XJAYs-Soc-Classic-Fix/releases/download/v0.3/socfix_module.zip)
+2. Root manager → Modules → Install from storage → pick the zip
+3. Reboot, launch the game
+4. Optional: logcat filter `SocFix` should show ASLR disabled for the package
+
+### Module history
+
+| Version | Date | Notes |
+|---|---|---|
+| **v0.3** (current) | 2026-07-13 | Reverted experimental meminfo spoof (SELinux walls in zygote). ASLR-only again. Pinned libcxx for NDK r27. VT 0/65. |
+| v0.2 | 2026-07-13 | Intermediate public release; superseded after the meminfo experiment was pulled. |
+| v0.1 | 2026-07-13 | Initial Zygisk module — ASLR off for the game process only. |
 
 ## How you can help
 
@@ -167,15 +201,17 @@ Entertainment to prioritize a real fix. If you're hitting this crash:
 - Grab a `logcat` capture around the crash (filtered to
   `com.vnlentertainment.socclassic` is fine) and share it via
   [an issue](../../issues/new) or the [Discord](https://discord.gg/gkYmXkn57Z)
-- Include your device model/manufacturer and RAM if you know it
+- Include your device model/manufacturer and RAM if you know it — and whether
+  you tried the module
 - No root or technical setup required just to report — the log alone is useful
 
 ## Repo layout
 
 ```
 reports/    Crash investigation write-up addressed to the game's developers
-archive/    Archived, experimental root-only workaround (unverified, unlisted)
-docs/       This project's website (GitHub Pages)
+archive/    Module source + historical notes (build/experiment yourself)
+docs/       Project website (GitHub Pages) — status, download, FAQ
+releases/   Published zips via GitHub Releases (v0.3 current)
 logs/       Raw supporting logcat captures (gitignored, kept locally)
 ```
 
@@ -186,7 +222,9 @@ Entertainment in any way.** This is an independent, unofficial investigation
 put together by a player, not a developer of the game. It exists solely to
 document and help get fixed a crash-on-launch issue — it is not a mod, a
 cheat, a cracking tool, or a way to unlock/change anything about the game.
-No APK is modified, redistributed, or cracked as part of this project.
+No APK is modified, redistributed, or cracked as part of this project. The
+experimental Zygisk module only changes an OS-level process flag (ASLR) for
+that one package name.
 
 If VNL Entertainment fixes this upstream, this project's job is done — that's
 the actual goal here, not maintaining a workaround indefinitely.

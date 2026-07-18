@@ -35,6 +35,23 @@
     if (e.persisted) ready();
   });
 
+  // Sticky header: light elevation once the report scrolls under it
+  function wireNavbarScroll() {
+    var nav = document.querySelector("header.navbar");
+    if (!nav) return;
+    var onScroll = function () {
+      if (window.scrollY > 8) nav.classList.add("is-scrolled");
+      else nav.classList.remove("is-scrolled");
+    };
+    onScroll();
+    window.addEventListener("scroll", onScroll, { passive: true });
+  }
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", wireNavbarScroll);
+  } else {
+    wireNavbarScroll();
+  }
+
   if (reduce) return;
 
   var LEAVE_MS = 210;

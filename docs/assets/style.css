@@ -30,27 +30,38 @@ body{
 }
 
 /* ---------- page transitions (enter / leave between HTML pages) ---------- */
-/* Only hide pre-enter when JS is live — no blank page if the script fails. */
-html.page-trans.js body{
+/* Content fades; navbar has its own choreography so the stagger is visible. */
+html.page-trans.js .page-banner,
+html.page-trans.js main,
+html.page-trans.js footer.site-footer{
   transition:
     opacity 0.28s ease,
     transform 0.32s cubic-bezier(0.22, 1, 0.36, 1);
 }
-html.page-trans.js body:not(.is-ready):not(.is-leaving){
+html.page-trans.js body:not(.is-ready):not(.is-leaving) .page-banner,
+html.page-trans.js body:not(.is-ready):not(.is-leaving) main,
+html.page-trans.js body:not(.is-ready):not(.is-leaving) footer.site-footer{
   opacity:0;
-  transform:translateY(8px);
+  transform:translateY(10px);
 }
-html.page-trans.js body.is-ready{
+html.page-trans.js body.is-ready .page-banner,
+html.page-trans.js body.is-ready main,
+html.page-trans.js body.is-ready footer.site-footer{
   opacity:1;
   transform:translateY(0);
 }
-html.page-trans.js body.is-leaving{
+html.page-trans.js body.is-leaving .page-banner,
+html.page-trans.js body.is-leaving main,
+html.page-trans.js body.is-leaving footer.site-footer{
   opacity:0;
   transform:translateY(-6px);
   pointer-events:none;
   transition:
     opacity 0.2s ease,
     transform 0.22s ease;
+}
+html.page-trans.js body.is-leaving{
+  pointer-events:none;
 }
 /* thin phosphor sweep on enter — case-file, not marketing chrome */
 html.page-trans.js body.is-ready::before{
@@ -66,10 +77,15 @@ html.page-trans.js body.is-ready::before{
   to{ opacity:0; transform:scaleX(1); }
 }
 @media (prefers-reduced-motion: reduce){
-  html.page-trans.js body,
-  html.page-trans.js body.is-ready,
-  html.page-trans.js body:not(.is-ready):not(.is-leaving),
-  html.page-trans.js body.is-leaving{
+  html.page-trans.js .page-banner,
+  html.page-trans.js main,
+  html.page-trans.js footer.site-footer,
+  html.page-trans.js body.is-ready .page-banner,
+  html.page-trans.js body.is-ready main,
+  html.page-trans.js body.is-ready footer.site-footer,
+  html.page-trans.js body.is-leaving .page-banner,
+  html.page-trans.js body.is-leaving main,
+  html.page-trans.js body.is-leaving footer.site-footer{
     opacity:1; transform:none; transition:none;
   }
   html.page-trans.js body.is-ready::before{ display:none; animation:none; }
@@ -83,12 +99,35 @@ code, pre{font-family:var(--mono);}
 
 /* ---------- top bar: report header strip, not a marketing nav ---------- */
 header.navbar{
+  position:sticky; top:0; z-index:100;
   border-bottom:1px solid var(--line);
   background:var(--ink);
+  /* draw the report header rule left→right on enter */
+  --nav-rule: 0%;
+  box-shadow:none;
+  transition:
+    background 0.25s ease,
+    box-shadow 0.25s ease,
+    border-color 0.25s ease;
+}
+header.navbar::after{
+  content:"";
+  position:absolute; left:0; bottom:-1px; height:1px; width:var(--nav-rule);
+  background:var(--trace-dim);
+  transition:width 0.55s cubic-bezier(0.22, 1, 0.36, 1);
+  pointer-events:none;
+}
+header.navbar.is-scrolled{
+  background:rgba(16,14,12,0.92);
+  backdrop-filter:blur(8px);
+  -webkit-backdrop-filter:blur(8px);
+  border-color:var(--line-bright);
+  box-shadow:0 8px 24px rgba(0,0,0,0.35);
 }
 .navbar .wrap{
   display:flex; align-items:center; justify-content:space-between;
   height:56px; font-family:var(--mono); font-size:13px; gap:16px;
+  position:relative;
 }
 .navbar .brand{
   display:flex; align-items:center; gap:10px; min-width:0;
@@ -99,17 +138,109 @@ header.navbar{
 .navbar .brand .sep{color:var(--paper-faint);}
 .navbar nav{display:flex; gap:22px; align-items:center; flex-shrink:0;}
 .navbar nav a{
+  position:relative;
   color:var(--paper-dim); font-size:13px; text-decoration:none;
-  padding:2px 0; border-bottom:1px solid transparent;
+  padding:2px 0;
+  transition:color 0.18s ease;
 }
-.navbar nav a:hover{color:var(--paper); border-bottom-color:var(--line-bright);}
-.navbar nav a.active{color:var(--trace); border-bottom-color:var(--trace-dim);}
+.navbar nav a::after{
+  content:"";
+  position:absolute; left:0; right:0; bottom:-2px; height:1px;
+  background:var(--trace);
+  transform:scaleX(0); transform-origin:left center;
+  transition:transform 0.22s cubic-bezier(0.22, 1, 0.36, 1), background 0.18s ease;
+}
+.navbar nav a:hover{color:var(--paper);}
+.navbar nav a:hover::after{
+  transform:scaleX(1);
+  background:var(--line-bright);
+}
+.navbar nav a.active{color:var(--trace);}
+.navbar nav a.active::after{
+  transform:scaleX(1);
+  background:var(--trace-dim);
+}
 .navbar .gh-btn{
   color:var(--paper-dim); font-size:13px; text-decoration:none;
   border:1px solid var(--line); padding:5px 12px; border-radius:var(--radius);
   display:inline-flex; align-items:center; gap:6px;
+  transition:
+    color 0.18s ease,
+    border-color 0.18s ease,
+    background 0.18s ease,
+    transform 0.18s ease;
 }
-.navbar .gh-btn:hover{color:var(--paper); border-color:var(--line-bright);}
+.navbar .gh-btn:hover{
+  color:var(--paper); border-color:var(--line-bright);
+  background:var(--panel); transform:translateY(-1px);
+}
+
+/* navbar enter choreography (page-trans pages) */
+html.page-trans.js body:not(.is-ready) header.navbar{
+  --nav-rule: 0%;
+}
+html.page-trans.js body:not(.is-ready) .navbar .brand,
+html.page-trans.js body:not(.is-ready) .navbar nav a,
+html.page-trans.js body:not(.is-ready) .navbar .gh-btn{
+  opacity:0;
+  transform:translateY(-10px);
+}
+html.page-trans.js body.is-ready header.navbar{
+  --nav-rule: 100%;
+}
+html.page-trans.js body.is-ready .navbar .brand,
+html.page-trans.js body.is-ready .navbar nav a,
+html.page-trans.js body.is-ready .navbar .gh-btn{
+  opacity:1;
+  transform:translateY(0);
+  transition:
+    opacity 0.35s cubic-bezier(0.22, 1, 0.36, 1),
+    transform 0.35s cubic-bezier(0.22, 1, 0.36, 1);
+}
+html.page-trans.js body.is-ready .navbar .brand{ transition-delay:0.04s; }
+html.page-trans.js body.is-ready .navbar nav a:nth-child(1){ transition-delay:0.10s; }
+html.page-trans.js body.is-ready .navbar nav a:nth-child(2){ transition-delay:0.14s; }
+html.page-trans.js body.is-ready .navbar nav a:nth-child(3){ transition-delay:0.18s; }
+html.page-trans.js body.is-ready .navbar nav a:nth-child(4){ transition-delay:0.22s; }
+html.page-trans.js body.is-ready .navbar nav a:nth-child(5){ transition-delay:0.26s; }
+html.page-trans.js body.is-ready .navbar .gh-btn{ transition-delay:0.30s; }
+
+/* leave: reverse stagger — bar collapses, items lift out */
+html.page-trans.js body.is-leaving header.navbar{
+  --nav-rule: 0%;
+  transition: none;
+}
+html.page-trans.js body.is-leaving .navbar .brand,
+html.page-trans.js body.is-leaving .navbar nav a,
+html.page-trans.js body.is-leaving .navbar .gh-btn{
+  opacity:0;
+  transform:translateY(-8px);
+  transition:
+    opacity 0.16s ease,
+    transform 0.16s ease !important;
+  transition-delay:0s !important;
+}
+
+@media (prefers-reduced-motion: reduce){
+  header.navbar,
+  header.navbar::after,
+  .navbar nav a,
+  .navbar nav a::after,
+  .navbar .gh-btn,
+  html.page-trans.js body.is-ready .navbar .brand,
+  html.page-trans.js body.is-ready .navbar nav a,
+  html.page-trans.js body.is-ready .navbar .gh-btn,
+  html.page-trans.js body.is-leaving .navbar .brand,
+  html.page-trans.js body.is-leaving .navbar nav a,
+  html.page-trans.js body.is-leaving .navbar .gh-btn{
+    transition:none !important;
+    animation:none !important;
+    transform:none !important;
+    opacity:1 !important;
+  }
+  html.page-trans.js body.is-ready header.navbar{ --nav-rule: 100%; }
+  header.navbar.is-scrolled{ backdrop-filter:none; -webkit-backdrop-filter:none; }
+}
 
 /* ---------- page banner ---------- */
 .page-banner{padding:56px 0 40px; border-bottom:1px solid var(--line);}

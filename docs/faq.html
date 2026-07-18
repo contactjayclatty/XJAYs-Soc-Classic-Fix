@@ -45,7 +45,7 @@
 
       <details class="faq" open>
         <summary>Is there a fix I can install right now?</summary>
-        <div class="faq-body">No confirmed, recommended fix currently exists. An experimental root-only workaround was explored and is kept in the repo's <code class="inline">archive/</code> folder for reference, but it was never proven fully reliable (it still crashed once even with the mitigation confirmed active) and isn't published or recommended. See <a href="download.html">Status</a> for the full explanation.</div>
+        <div class="faq-body">No <em>confirmed, guaranteed</em> fix — upstream still needs a Unity update from VNL. There is an <strong>experimental</strong> root-only Zygisk module (<a href="https://github.com/contactjayclatty/XJAYs-Soc-Classic-Fix/releases/tag/v0.3">v0.3</a>) that disables ASLR for the game process. It may reduce crashes but was never proven to eliminate them (it still crashed once with the mitigation active). Root + Zygisk required. See <a href="download.html">Status &amp; download</a>.</div>
       </details>
 
       <details class="faq">
@@ -69,13 +69,13 @@
       </details>
 
       <details class="faq">
-        <summary>Can I still try the experimental workaround myself?</summary>
-        <div class="faq-body">Yes, if you understand it's unverified and requires root. The source is in <a href="https://github.com/contactjayclatty/XJAYs-Soc-Classic-Fix/tree/master/archive">archive/</a> — you'd need to build it yourself (Android NDK required) since it isn't published as a ready-to-install release. See <code class="inline">archive/README.md</code> for context on why it's archived rather than recommended.</div>
+        <summary>Can I try the experimental workaround myself?</summary>
+        <div class="faq-body">Yes, if you understand it's experimental and requires root + Zygisk. Grab the ready-to-flash zip from the <a href="https://github.com/contactjayclatty/XJAYs-Soc-Classic-Fix/releases/tag/v0.3">v0.3 release</a> (or the download buttons on <a href="download.html">Status</a>). Source is still in <a href="https://github.com/contactjayclatty/XJAYs-Soc-Classic-Fix/tree/master/archive/module">archive/module/</a> if you want to rebuild with the NDK.</div>
       </details>
 
       <details class="faq">
         <summary>Does this modify the game's APK?</summary>
-        <div class="faq-body">No. Nothing in this project modifies, redistributes, or cracks the game's APK or assets. The archived experimental workaround only ever changed an OS-level process flag from outside the app, and even that isn't distributed.</div>
+        <div class="faq-body">No. Nothing in this project modifies, redistributes, or cracks the game's APK or assets. The experimental Zygisk module only changes an OS-level process flag (ASLR) from outside the app for that one package name.</div>
       </details>
 
       <details class="faq">
@@ -92,6 +92,7 @@
   <div class="wrap">
     <div class="footer-links">
       <a href="https://github.com/contactjayclatty/XJAYs-Soc-Classic-Fix">repo</a>
+      <a href="https://github.com/contactjayclatty/XJAYs-Soc-Classic-Fix/releases/tag/v0.3">v0.3 release</a>
       <a href="https://github.com/contactjayclatty/XJAYs-Soc-Classic-Fix/issues">issues</a>
       <a href="https://github.com/contactjayclatty/XJAYs-Soc-Classic-Fix/blob/master/reports/SoC_Classic_crash_report.txt">crash report</a>
       <a href="https://github.com/contactjayclatty/XJAYs-Soc-Classic-Fix/blob/master/LICENSE">MIT license</a>

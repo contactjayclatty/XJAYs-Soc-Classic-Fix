@@ -3,8 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Status — School of Chaos Classic Crash Investigation</title>
-<meta name="description" content="Current status of the School of Chaos Classic crash-on-launch investigation. No confirmed fix is currently distributed.">
+<title>Status &amp; Module — School of Chaos Classic Crash Investigation</title>
+<meta name="description" content="Status of the School of Chaos Classic crash-on-launch investigation, plus the experimental Zygisk module v0.3 release.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="assets/style.css">
@@ -33,39 +33,98 @@
 <div class="page-banner">
   <div class="wrap">
     <div class="case-field">
-      <span>STATUS:</span> unresolved <span>·</span> no public fix distributed
+      <span>STATUS:</span> unresolved upstream
+      <span>·</span>
+      <span>MODULE:</span> v0.3 experimental
     </div>
-    <h1>Status</h1>
-    <p>No fix is currently distributed or recommended. Here's exactly why, and what's actually needed to resolve this.</p>
+    <h1>Status &amp; module</h1>
+    <p>The real fix still has to come from VNL. An experimental root-only Zygisk module is published for people who want to try a device-side workaround.</p>
   </div>
 </div>
 
 <main>
   <div class="wrap">
 
-    <section id="current-status">
-      <div class="note fault">
-        <div class="note-label">No confirmed public fix</div>
-        This project does not currently publish or recommend any workaround. See below for why the one that was explored isn't being distributed.
+    <section id="release">
+      <div class="sec-label">Artifact</div>
+      <h2>Experimental module — v0.3</h2>
+      <p>
+        A Zygisk module that disables ASLR for <code class="inline">com.vnlentertainment.socclassic</code> only, so the game's heap is less likely to land above the Unity 2017.4 allocator's ~16GB address ceiling. See <a href="index.html#why">root cause</a> for the full explanation.
+      </p>
+
+      <div class="fields">
+        <div class="field"><div class="k">Version</div><div class="v">v0.3</div></div>
+        <div class="field"><div class="k">Package id</div><div class="v">socfix_vnl</div></div>
+        <div class="field"><div class="k">ABI</div><div class="v">arm64-v8a</div></div>
+        <div class="field"><div class="k">VirusTotal</div><div class="v ok">0 / 65</div></div>
+      </div>
+
+      <div class="btn-row">
+        <a class="btn primary" href="https://github.com/contactjayclatty/XJAYs-Soc-Classic-Fix/releases/download/v0.3/socfix_module.zip">Download socfix_module.zip →</a>
+        <a class="btn" href="https://github.com/contactjayclatty/XJAYs-Soc-Classic-Fix/releases/tag/v0.3">Release notes &amp; changelog</a>
       </div>
     </section>
 
-    <section id="experimental">
-      <div class="sec-label">Log entry</div>
-      <h2>The experimental workaround</h2>
-      <p>
-        A root-only Zygisk module was built and tested: it disables ASLR for just the game's process, on the theory that keeping its heap address low and stable would avoid the overflow described on <a href="index.html#why">Home</a>.
-      </p>
-      <p>It showed promising results in repeated testing — but:</p>
+    <section id="requirements">
+      <div class="sec-label">Install</div>
+      <h2>Requirements &amp; steps</h2>
       <ul>
-        <li>In one specific run, the mitigation was confirmed active (logged and verified) and the game <strong>still crashed</strong> — so it was never proven to fully eliminate the bug, just reduce its frequency.</li>
-        <li>It was only ever tested on one device/root configuration (KernelSU on a Pixel 9 Pro XL).</li>
-        <li>The crash has since been confirmed on device families this workaround was never tested on — see <a href="index.html#devices">confirmed devices</a>.</li>
-        <li>It requires root and a Zygisk-compatible setup, which most affected players won't have.</li>
+        <li>Rooted Android device</li>
+        <li>Zygisk-compatible root (KernelSU, or Magisk with Zygisk enabled)</li>
+        <li>arm64-v8a (64-bit) — matches the game's APK</li>
+      </ul>
+      <ol class="steps">
+        <li>Download <code class="inline">socfix_module.zip</code> from the release above.</li>
+        <li>Flash it in your root manager (Modules → Install from storage).</li>
+        <li>Reboot.</li>
+        <li>Launch School of Chaos Classic. Check logcat for <code class="inline">SocFix</code> if you want to confirm the hook ran.</li>
+      </ol>
+    </section>
+
+    <section id="caveats">
+      <div class="sec-label">Caveats</div>
+      <h2>Read this before installing</h2>
+      <div class="note fault">
+        <div class="note-label">Experimental — not a guaranteed fix</div>
+        This is not recommended as a permanent solution. Upstream still needs to update Unity. Install at your own risk.
+      </div>
+      <ul>
+        <li>In one test run the mitigation was confirmed active and the game <strong>still crashed</strong> — so it may reduce frequency rather than eliminate the bug.</li>
+        <li>Primarily tested on one setup: KernelSU on a Pixel 9 Pro XL.</li>
+        <li>The crash is confirmed on device families this module was never tested on — see <a href="index.html#devices">confirmed devices</a>.</li>
+        <li>Requires root; most affected players won't have that path.</li>
       </ul>
       <p>
-        For those reasons it isn't published as a release or actively recommended. The source is kept in <a href="https://github.com/contactjayclatty/XJAYs-Soc-Classic-Fix/tree/master/archive">archive/</a> for anyone who wants to inspect, build, or experiment with it — entirely at their own risk, unverified beyond a single test device.
+        Source lives in <a href="https://github.com/contactjayclatty/XJAYs-Soc-Classic-Fix/tree/master/archive/module">archive/module/</a> if you want to inspect or rebuild it yourself.
       </p>
+    </section>
+
+    <section id="changelog">
+      <div class="sec-label">History</div>
+      <h2>Changelog (module)</h2>
+      <table>
+        <thead><tr><th>Version</th><th>Date</th><th>Notes</th></tr></thead>
+        <tbody>
+          <tr>
+            <td><strong>v0.3</strong></td>
+            <td>2026-07-13</td>
+            <td>Reverted experimental meminfo spoof (SELinux walls in zygote). ASLR-only again. Pinned libcxx for NDK r27. VT 0/65.</td>
+          </tr>
+          <tr>
+            <td>v0.2</td>
+            <td>2026-07-13</td>
+            <td>Intermediate public release; superseded by v0.3 after the meminfo experiment was pulled.</td>
+          </tr>
+          <tr>
+            <td>v0.1</td>
+            <td>2026-07-13</td>
+            <td>Initial Zygisk module — <code class="inline">personality(ADDR_NO_RANDOMIZE)</code> for the game process only.</td>
+          </tr>
+        </tbody>
+      </table>
+      <div class="btn-row">
+        <a class="btn" href="https://github.com/contactjayclatty/XJAYs-Soc-Classic-Fix/releases/tag/v0.3">Full release notes on GitHub →</a>
+      </div>
     </section>
 
     <section id="real-fix">
@@ -87,7 +146,7 @@
       <ol class="steps">
         <li>Grab a <code class="inline">logcat</code> capture around the crash (filtered to <code class="inline">com.vnlentertainment.socclassic</code> is fine).</li>
         <li>Share it via <a href="https://github.com/contactjayclatty/XJAYs-Soc-Classic-Fix/issues/new">an issue</a> or the <a href="https://discord.gg/gkYmXkn57Z">Discord</a>.</li>
-        <li>Include your device model/manufacturer and RAM if you know it.</li>
+        <li>Include your device model/manufacturer and RAM if you know it — and whether you tried the module.</li>
       </ol>
       <p>No root or technical setup required just to report — the log alone is genuinely useful.</p>
     </section>
@@ -99,6 +158,7 @@
   <div class="wrap">
     <div class="footer-links">
       <a href="https://github.com/contactjayclatty/XJAYs-Soc-Classic-Fix">repo</a>
+      <a href="https://github.com/contactjayclatty/XJAYs-Soc-Classic-Fix/releases/tag/v0.3">v0.3 release</a>
       <a href="https://github.com/contactjayclatty/XJAYs-Soc-Classic-Fix/issues">issues</a>
       <a href="https://github.com/contactjayclatty/XJAYs-Soc-Classic-Fix/blob/master/reports/SoC_Classic_crash_report.txt">crash report</a>
       <a href="https://github.com/contactjayclatty/XJAYs-Soc-Classic-Fix/blob/master/LICENSE">MIT license</a>

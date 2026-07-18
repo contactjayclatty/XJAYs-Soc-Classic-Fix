@@ -54,5 +54,3 @@ To confirm: I disabled ASLR (`personality(ADDR_NO_RANDOMIZE)`) for just this app
 ```
 *(the ConnectException lines are just it failing to reach Unity's analytics/cloud endpoints, probably unrelated — only included for completeness since they're right before the crash)*
 
----
-*Full disclosure: yes, Claude helped write this. No, Claude did not achieve sentience and unionize against segfaults — it just pulled the APK, grepped a binary, wrote a Zygisk module, and typed faster than I would have. The bug — and the fix — are still very real though.*

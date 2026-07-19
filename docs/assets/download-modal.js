@@ -17,10 +17,10 @@
   var virusEl = document.getElementById("dlModalVirus");
 
   var STEPS = [
-    { pct: 20, status: "Verifying package integrity…", delay: 220 },
-    { pct: 55, status: "Running virus check…", delay: 380 },
-    { pct: 80, status: "Confirming target stack…", delay: 260 },
-    { pct: 100, status: "Starting download…", delay: 240 }
+    { pct: 25, status: "Preparing download…", delay: 200 },
+    { pct: 55, status: "Resolving release asset…", delay: 260 },
+    { pct: 85, status: "Handing off to GitHub…", delay: 240 },
+    { pct: 100, status: "Starting download…", delay: 220 }
   ];
 
   var timers = [];
@@ -36,7 +36,7 @@
     overlay.classList.remove("is-done");
     fill.style.width = "0%";
     pctEl.textContent = "0%";
-    statusEl.textContent = "Verifying package integrity…";
+    statusEl.textContent = "Preparing download…";
   }
 
   function openModal(link) {

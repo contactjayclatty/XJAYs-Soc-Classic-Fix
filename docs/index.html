@@ -74,20 +74,20 @@
 
       <div class="ruler-wrap">
         <svg viewBox="0 0 900 100" width="100%" height="auto" role="img" aria-label="Diagram of the 64-bit virtual address space from 0 to 32GB, with a marked ceiling at 16GB separating a safe zone from an overflow zone where the heap can be placed by ASLR.">
-          <line x1="40" y1="60" x2="450" y2="60" stroke="#4f8a67" stroke-width="2"/>
-          <line x1="450" y1="60" x2="860" y2="60" stroke="#e0634a" stroke-width="2" opacity="0.65"/>
-          <line x1="450" y1="18" x2="450" y2="82" stroke="#65706a" stroke-width="1" stroke-dasharray="2,3"/>
-          <text x="450" y="12" text-anchor="middle" fill="#e3e6e2" font-family="IBM Plex Mono" font-size="12" font-weight="600">16GB — allocator's assumed ceiling</text>
-          <text x="245" y="46" text-anchor="middle" fill="#7cc491" font-family="IBM Plex Mono" font-size="11">safe</text>
-          <text x="655" y="46" text-anchor="middle" fill="#e0634a" font-family="IBM Plex Mono" font-size="11">overflow zone — ASLR can land here</text>
-          <g stroke="#323a3c" stroke-width="1">
+          <line x1="40" y1="60" x2="450" y2="60" stroke="#568f6e" stroke-width="2"/>
+          <line x1="450" y1="60" x2="860" y2="60" stroke="#e36a4f" stroke-width="2" opacity="0.65"/>
+          <line x1="450" y1="18" x2="450" y2="82" stroke="#717b74" stroke-width="1" stroke-dasharray="2,3"/>
+          <text x="450" y="12" text-anchor="middle" fill="#e9ece8" font-family="IBM Plex Mono" font-size="12" font-weight="600">16GB — allocator's assumed ceiling</text>
+          <text x="245" y="46" text-anchor="middle" fill="#82ce9b" font-family="IBM Plex Mono" font-size="11">safe</text>
+          <text x="655" y="46" text-anchor="middle" fill="#e36a4f" font-family="IBM Plex Mono" font-size="11">overflow zone — ASLR can land here</text>
+          <g stroke="#384043" stroke-width="1">
             <line x1="40" y1="55" x2="40" y2="65"/>
             <line x1="245" y1="55" x2="245" y2="65"/>
             <line x1="450" y1="55" x2="450" y2="65"/>
             <line x1="655" y1="55" x2="655" y2="65"/>
             <line x1="860" y1="55" x2="860" y2="65"/>
           </g>
-          <g fill="#65706a" font-family="IBM Plex Mono" font-size="11" text-anchor="middle">
+          <g fill="#717b74" font-family="IBM Plex Mono" font-size="11" text-anchor="middle">
             <text x="40" y="80">0</text>
             <text x="245" y="80">8GB</text>
             <text x="450" y="80">16GB</text>
@@ -103,9 +103,9 @@
 
       <div class="ruler-wrap">
         <svg viewBox="0 0 900 130" width="100%" height="auto" role="img" aria-label="Zoomed-in diagram of the address range from 1.0MB to 1.3MB, showing seven real fault addresses recovered from crash logs clustered tightly together.">
-          <text x="40" y="14" fill="#65706a" font-family="IBM Plex Mono" font-size="11">zoomed — 1.0MB to 1.3MB (7 confirmed fault addresses)</text>
-          <line x1="40" y1="60" x2="860" y2="60" stroke="#323a3c" stroke-width="2"/>
-          <g stroke="#e0634a" stroke-width="2">
+          <text x="40" y="14" fill="#717b74" font-family="IBM Plex Mono" font-size="11">zoomed — 1.0MB to 1.3MB (7 confirmed fault addresses)</text>
+          <line x1="40" y1="60" x2="860" y2="60" stroke="#384043" stroke-width="2"/>
+          <g stroke="#e36a4f" stroke-width="2">
             <line x1="448" y1="50" x2="448" y2="70"/>
             <line x1="626" y1="50" x2="626" y2="70"/>
             <line x1="655" y1="50" x2="655" y2="70"/>
@@ -114,12 +114,12 @@
             <line x1="650" y1="50" x2="650" y2="70"/>
             <line x1="637" y1="50" x2="637" y2="70"/>
           </g>
-          <line x1="448" y1="72" x2="448" y2="95" stroke="#e0634a" stroke-width="1" stroke-dasharray="2,2"/>
-          <text x="448" y="110" text-anchor="middle" fill="#e3e6e2" font-family="IBM Plex Mono" font-size="12" font-weight="600">0x119b8c</text>
-          <text x="448" y="124" text-anchor="middle" fill="#65706a" font-family="IBM Plex Mono" font-size="10.5">first confirmed fault</text>
-          <line x1="640" y1="72" x2="640" y2="95" stroke="#e0634a" stroke-width="1" stroke-dasharray="2,2"/>
-          <text x="640" y="110" text-anchor="middle" fill="#e3e6e2" font-family="IBM Plex Mono" font-size="12" font-weight="600">0x128a4b–0x12af55</text>
-          <text x="640" y="124" text-anchor="middle" fill="#65706a" font-family="IBM Plex Mono" font-size="10.5">6 more, same cluster</text>
+          <line x1="448" y1="72" x2="448" y2="95" stroke="#e36a4f" stroke-width="1" stroke-dasharray="2,2"/>
+          <text x="448" y="110" text-anchor="middle" fill="#e9ece8" font-family="IBM Plex Mono" font-size="12" font-weight="600">0x119b8c</text>
+          <text x="448" y="124" text-anchor="middle" fill="#717b74" font-family="IBM Plex Mono" font-size="10.5">first confirmed fault</text>
+          <line x1="640" y1="72" x2="640" y2="95" stroke="#e36a4f" stroke-width="1" stroke-dasharray="2,2"/>
+          <text x="640" y="110" text-anchor="middle" fill="#e9ece8" font-family="IBM Plex Mono" font-size="12" font-weight="600">0x128a4b–0x12af55</text>
+          <text x="640" y="124" text-anchor="middle" fill="#717b74" font-family="IBM Plex Mono" font-size="10.5">6 more, same cluster</text>
         </svg>
       </div>
     </section>

@@ -49,6 +49,19 @@
 
   /* ---------- mobile menu ---------- */
   var navEl, toggleBtn, scrim, panel;
+  var mqDesktop = window.matchMedia ? window.matchMedia("(min-width: 769px)") : null;
+
+  function isNavOpen() {
+    return !!(navEl && navEl.classList.contains("is-open"));
+  }
+
+  // aria-hidden only applies to the mobile drawer; on desktop the panel is
+  // always visible and must stay exposed to assistive tech.
+  function syncPanelA11y() {
+    if (!panel) return;
+    if (!mqDesktop || mqDesktop.matches) panel.removeAttribute("aria-hidden");
+    else panel.setAttribute("aria-hidden", isNavOpen() ? "false" : "true");
+  }
 
   function setOpen(open) {
     if (!navEl || !toggleBtn) return;
@@ -56,22 +69,15 @@
     document.body.classList.toggle("nav-open", open);
     toggleBtn.setAttribute("aria-expanded", open ? "true" : "false");
     toggleBtn.setAttribute("aria-label", open ? "Close menu" : "Open menu");
-    if (scrim) {
-      if (open) scrim.hidden = false;
-      else scrim.hidden = true;
-    }
+    if (scrim) scrim.hidden = !open;
+    syncPanelA11y();
   }
 
   function closeNav(immediate) {
-    if (!navEl || !navEl.classList.contains("is-open")) {
-      setOpen(false);
-      return;
-    }
-    if (immediate || reduce) {
-      setOpen(false);
-      return;
-    }
+    if (!navEl) return;
+    var focusInside = panel && panel.contains(document.activeElement);
     setOpen(false);
+    if (focusInside && toggleBtn) toggleBtn.focus();
   }
 
   function openNav() {
@@ -79,8 +85,33 @@
   }
 
   function toggleNav() {
-    if (navEl && navEl.classList.contains("is-open")) closeNav();
+    if (isNavOpen()) closeNav();
     else openNav();
+  }
+
+  function panelFocusables() {
+    if (!panel) return [];
+    return Array.prototype.slice.call(
+      panel.querySelectorAll('a[href], button:not([disabled]), [tabindex]:not([tabindex="-1"])')
+    );
+  }
+
+  // Keep Tab cycling through: toggle button -> drawer links -> gh button.
+  function trapTab(e) {
+    if (!toggleBtn) return;
+    var items = [toggleBtn].concat(panelFocusables());
+    var first = items[0];
+    var last = items[items.length - 1];
+    var active = document.activeElement;
+    if (e.shiftKey) {
+      if (active === first || !navEl.contains(active)) {
+        e.preventDefault();
+        last.focus();
+      }
+    } else if (active === last) {
+      e.preventDefault();
+      first.focus();
+    }
   }
 
   function wireMobileNav() {
@@ -90,6 +121,8 @@
     scrim = navEl.querySelector(".nav-scrim") || document.getElementById("nav-scrim");
     panel = navEl.querySelector(".nav-panel");
     if (!toggleBtn) return;
+
+    syncPanelA11y();
 
     toggleBtn.addEventListener("click", function (e) {
       e.stopPropagation();
@@ -103,17 +136,24 @@
     }
 
     document.addEventListener("keydown", function (e) {
-      if (e.key === "Escape") closeNav();
+      if (!isNavOpen()) return;
+      if (e.key === "Escape") {
+        e.preventDefault();
+        closeNav();
+        if (toggleBtn) toggleBtn.focus();
+      } else if (e.key === "Tab") {
+        trapTab(e);
+      }
     });
 
-    // Close when switching to desktop layout
-    if (window.matchMedia) {
-      var mq = window.matchMedia("(min-width: 769px)");
+    // Close when switching to desktop layout; keep aria state in sync
+    if (mqDesktop) {
       var onMq = function (ev) {
         if (ev.matches) closeNav(true);
+        syncPanelA11y();
       };
-      if (mq.addEventListener) mq.addEventListener("change", onMq);
-      else if (mq.addListener) mq.addListener(onMq);
+      if (mqDesktop.addEventListener) mqDesktop.addEventListener("change", onMq);
+      else if (mqDesktop.addListener) mqDesktop.addListener(onMq);
     }
 
     // Close after choosing a link (page leave also closes)

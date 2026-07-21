@@ -12,9 +12,12 @@
 </head>
 <body>
 
+<a class="skip-link" href="#main">Skip to content</a>
+
 <header class="navbar">
   <div class="wrap">
     <a class="brand" href="index.html">
+      <span class="brand-mark" aria-hidden="true"></span>
       <span class="case-id">CASE // SOC-CLASSIC-01</span>
       <span class="brand-sub"><span class="sep">·</span> investigation log</span>
     </a>
@@ -26,9 +29,10 @@
       </span>
     </button>
     <div class="nav-panel" id="site-nav">
+      <div class="nav-panel-label" aria-hidden="true">INDEX</div>
       <nav class="nav-links" aria-label="Primary">
         <a href="index.html" data-nav="home">Home</a>
-        <a href="status.html" data-nav="status" class="active">Status</a>
+        <a href="status.html" data-nav="status" class="active" aria-current="page">Status</a>
         <a href="download.html" data-nav="download">Download</a>
         <a href="faq.html" data-nav="faq">FAQ</a>
         <a href="contact.html" data-nav="contact">Contact</a>
@@ -54,7 +58,7 @@
   </div>
 </div>
 
-<main>
+<main id="main">
   <div class="wrap">
 
     <section id="current-status">
